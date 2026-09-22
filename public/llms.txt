@@ -1,0 +1,20 @@
+# Get Levrg
+
+> Get Levrg provides dedicated, managed teams for businesses that need more output
+> without the cost and delay of hiring in-house: video editing, social media
+> management, CRM/RevOps optimization, and outbound/LinkedIn programs. Teams launch
+> in about 14 days, work is billed without long-term contracts, and typical savings
+> versus a North American in-house hire run up to 80%.
+
+## Services
+
+- [Video Editing](https://gl-vite-lp.vercel.app/video): Managed video editing teams for agencies, marketing teams, and B2B companies — short-form, long-form, motion graphics, and white-label editing.
+- [Social Media Management](https://gl-vite-lp.vercel.app/social): Dedicated social media production and management teams for professional services and B2B companies.
+- [CRM Optimization](https://gl-vite-lp.vercel.app/crm): HubSpot/CRM cleanup, data hygiene, and revenue-operations support.
+- [Website Optimization](https://gl-vite-lp.vercel.app/website-optimization): Conversion and performance optimization for existing marketing websites.
+- [LinkedIn & Outbound](https://gl-vite-lp.vercel.app/linkedin-outbound): LinkedIn-led outbound programs for B2B pipeline generation.
+
+## Notes
+
+- This is a client-rendered single-page app; each link above is a distinct landing
+  page reached via its own URL path, served client-side via React Router.
