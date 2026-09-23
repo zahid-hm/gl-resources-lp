@@ -25,10 +25,6 @@ export const DEFAULT_ONLY_COUNTRIES = ["US", "CA"];
 // Geolocation timeout for lead form validation
 export const GEO_TIMEOUT_MS = 3000;
 
-// ipgeolocation.io returns these for requests it can't resolve to a real country; neither exists in our dataset, 
-// so the caller must fall back.
-export const UNRESOLVED_CODES = new Set(["XX", "T1"]);
-
 // The disposable-domains list is a static, exact-match snapshot — it won't
 // have a brand-new or mirror temp-mail domain the day it appears. This is a
 // pattern-based supplement, same spirit as the phone check's degenerate-

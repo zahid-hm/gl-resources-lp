@@ -49,7 +49,6 @@
 | `EC2_SSH_KEY` | Private key (PEM) matching a key authorized on the instance |
 | `EC2_SSH_PORT` | Optional, defaults to `22` |
 | `EC2_APP_DIR` | Optional, defaults to `~/gl-resources-lp` — where `docker-compose.yml` lives on the host |
-| `IPGEO_API_KEY` | ipgeolocation.io key, written into the host's `.env` on every deploy, read by `/api/geolocate` |
 | `NEXT_PUBLIC_SITE_URL` | e.g. `https://getlevrg.com` — used at both build time (baked into the client bundle) and runtime |
 
 `GITHUB_TOKEN` (built-in, no setup needed) authenticates both the image push

@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
-import { UNRESOLVED_CODES } from "@/lib/constants";
 
-// Proxies ipgeolocation.io so the API key never reaches the browser. Returns
-// only what the widget/PhoneField needs: an ISO alpha-2 country code for the
-// visitor. Ported 1:1 from form-field-validator/api/geolocate.js.
-//
-// Required env var: IPGEO_API_KEY (get one at https://app.ipgeolocation.io/)
+// Proxies ipwho.is so the lookup happens server-side. Returns only what the
+// widget/PhoneField needs: an ISO alpha-2 country code for the visitor.
+// Ported 1:1 from form-field-validator/api/geolocate.js (originally against
+// ipgeolocation.io; ipwho.is needs no API key).
 
-const IPGEO_ENDPOINT = process.env.IPGEO_ENDPOINT ?? "https://api.ipgeolocation.io/ipgeo";
+const IPWHOIS_ENDPOINT = process.env.IPWHOIS_ENDPOINT ?? "https://ipwho.is";
 
 function clientIp(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -16,20 +14,13 @@ function clientIp(request: Request): string {
 }
 
 export async function GET(request: Request) {
-  const apiKey = process.env.IPGEO_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json({ error: "IPGEO_API_KEY is not configured" }, { status: 500 });
-  }
-
   const ip = clientIp(request);
   const isPrivateIp = !ip || ip === "::1" || ip.startsWith("127.") || ip.startsWith("10.") || ip.startsWith("192.168.");
 
-  const url = new URL(IPGEO_ENDPOINT);
-  url.searchParams.set("apiKey", apiKey);
-  url.searchParams.set("fields", "country_code2");
   // Only forward a real public IP; on localhost/dev let the API infer from
   // the request itself (usually resolves to the server's own egress IP).
-  if (ip && !isPrivateIp) url.searchParams.set("ip", ip);
+  const url = new URL(ip && !isPrivateIp ? `/${ip}` : "/", IPWHOIS_ENDPOINT);
+  url.searchParams.set("fields", "success,country_code");
 
   try {
     const upstream = await fetch(url.toString());
@@ -37,8 +28,9 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: `upstream status ${upstream.status}` }, { status: 502 });
     }
     const data = await upstream.json();
-    const code = (data.country_code2 || "").toUpperCase();
-    const countryCode = code && !UNRESOLVED_CODES.has(code) ? code : null;
+    // ipwho.is sets success:false (with no country_code) for requests it
+    // can't resolve to a real country.
+    const countryCode = data.success && data.country_code ? String(data.country_code).toUpperCase() : null;
 
     // Never cache: the visitor's IP (and therefore country) can change
     // between page loads — VPN toggled, switched networks, etc.

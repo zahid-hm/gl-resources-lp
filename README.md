@@ -23,7 +23,7 @@ This repo is the merge of two previously separate projects — `GL-Vite-LP` (the
 flowchart LR
     Visitor(["Visitor's browser"]) -- HTTPS --> Nginx["Nginx\n(TLS termination, EC2 host)"]
     Nginx -- proxy :3000 --> App["Next.js container\n(App Router, SSR)"]
-    App -- "GET /api/geolocate" --> Geo[("ipgeolocation.io")]
+    App -- "GET /api/geolocate" --> Geo[("ipwho.is")]
     App -- "GET /api/check-email" --> DNS[("Cloudflare DNS-over-HTTPS")]
     App -- "static assets" --> Public["public/\nimages · flags · country data"]
 ```
@@ -67,7 +67,7 @@ gl-resources-lp/
 │   ├── app/
 │   │   ├── layout.tsx, globals.css, page.tsx, not-found.tsx
 │   │   ├── api/
-│   │   │   ├── geolocate/route.ts      # IP -> country code (needs IPGEO_API_KEY)
+│   │   │   ├── geolocate/route.ts      # IP -> country code (via ipwho.is, no API key)
 │   │   │   └── check-email/route.ts    # email domain -> disposable/MX check
 │   │   └── <route>/page.tsx            # one folder per landing page (65 total)
 │   ├── components/
@@ -95,7 +95,7 @@ gl-resources-lp/
 git clone <this-repo-url>
 cd gl-resources-lp
 npm install
-cp .env.example .env.local     # then fill in IPGEO_API_KEY (see below)
+cp .env.example .env.local
 npm run dev
 ```
 
@@ -117,7 +117,7 @@ Copy `.env.example` to `.env.local` for local development:
 
 | Variable | Required for | Notes |
 |---|---|---|
-| `IPGEO_API_KEY` | `/api/geolocate` (phone field's default-country detection) | Get a free key at [ipgeolocation.io](https://app.ipgeolocation.io/). Without it, geolocation silently fails and the phone field falls back to its `defaultCountry` prop — the rest of the site works fine. |
+| `IPWHOIS_ENDPOINT` | `/api/geolocate` (phone field's default-country detection) | Defaults to `https://ipwho.is` — no API key needed. If the lookup fails, the phone field falls back to its `defaultCountry` prop — the rest of the site works fine. |
 | `NEXT_PUBLIC_SITE_URL` | Canonical/OG URLs, `metadataBase` | Defaults to `https://getlevrg.com` if unset. Set to `http://localhost:3000` locally if you want accurate meta tags while developing. |
 
 `/api/check-email` needs no configuration — it uses Cloudflare's public DNS-over-HTTPS endpoint and the bundled `disposable-email-domains` package.
