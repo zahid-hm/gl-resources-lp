@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { PhoneField } from "@/components/shared/PhoneField";
+import { INTRO_DURATION, TESTIMONIAL_CAROUSEL_ROTATE_MS } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Globe,
@@ -116,7 +117,6 @@ export function WorkSampleBentoGrid() {
 }
 
 // ─── Inline HeroFormIntro (Website Optimization) ───
-const INTRO_DURATION = 6000;
 
 function WebsiteAnimation() {
   const scores = [
@@ -911,7 +911,7 @@ export function TestimonialsSection({ industry }: { industry?: string } = {}) {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, [testimonials.length]);
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { INTRO_DURATION, TESTIMONIAL_CAROUSEL_ROTATE_MS } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
@@ -148,8 +149,6 @@ export function WorkSampleBentoGrid() {
 /* ════════════════════════════════════════════════════════════════════════════
    INLINE: HeroFormIntro (Video only VideoAnimation + Form swap)
    ════════════════════════════════════════════════════════════════════════════ */
-
-const INTRO_DURATION = 6000;
 
 export interface VideoAnimationStat {
   icon: React.ComponentType<{ className?: string }>;
@@ -1530,7 +1529,7 @@ export function TestimonialsSection({ industry }: { industry?: string } = {}) {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, [testimonials.length]);
 
@@ -1681,7 +1680,7 @@ function GeneralTestimonialsSection() {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, [testimonials.length]);
 

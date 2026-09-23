@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { TESTIMONIAL_CAROUSEL_ROTATE_MS } from "@/lib/constants";
 import {
   ArrowRight, Zap, TrendingUp, Shield, Star, Lock, Mail,
   User, Film, Video, Sparkles, Palette,
@@ -601,7 +602,7 @@ function TestimonialsSection() {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, [testimonials.length]);
 

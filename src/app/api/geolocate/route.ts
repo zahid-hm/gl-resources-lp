@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { UNRESOLVED_CODES } from "@/lib/constants";
 
 // Proxies ipgeolocation.io so the API key never reaches the browser. Returns
 // only what the widget/PhoneField needs: an ISO alpha-2 country code for the
@@ -6,11 +7,7 @@ import { NextResponse } from "next/server";
 //
 // Required env var: IPGEO_API_KEY (get one at https://app.ipgeolocation.io/)
 
-const IPGEO_ENDPOINT = "https://api.ipgeolocation.io/ipgeo";
-
-// ipgeolocation.io returns these for requests it can't resolve to a real
-// country; neither exists in our dataset, so the caller must fall back.
-const UNRESOLVED_CODES = new Set(["XX", "T1"]);
+const IPGEO_ENDPOINT = process.env.IPGEO_ENDPOINT ?? "https://api.ipgeolocation.io/ipgeo";
 
 function clientIp(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { PhoneField } from "@/components/shared/PhoneField";
+import { INTRO_DURATION, TESTIMONIAL_CAROUSEL_ROTATE_MS } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Eye,
@@ -126,8 +127,6 @@ export function WorkSampleBentoGrid() {
 }
 
 // â”€â”€â”€ Inline HeroFormIntro (Social Only) â”€â”€â”€
-const INTRO_DURATION = 6000;
-
 export function SocialAnimation() {
   const posts = [
     { platform: "LinkedIn", icon: MessageCircle, color: "text-blue-600", bg: "bg-blue-50 border-blue-200", iconBg: "bg-blue-100", content: "5 Tax Strategies Your CPA Isn't Telling You About", likes: 142, shares: 38, views: "2.4K", checkColor: "text-blue-500" },
@@ -1576,7 +1575,7 @@ export function TestimonialsSection({ industry }: { industry?: string } = {}) {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, [testimonials.length]);
 
@@ -1699,7 +1698,7 @@ function GeneralTestimonialsSection() {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, []);
 

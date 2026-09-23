@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { PhoneField } from "@/components/shared/PhoneField";
+import { INTRO_DURATION, TESTIMONIAL_CAROUSEL_ROTATE_MS } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Send,
@@ -118,8 +119,6 @@ export function WorkSampleBentoGrid() {
 }
 
 // ─── Inline HeroFormIntro (LinkedIn & Outbound) ───
-const INTRO_DURATION = 6000;
-
 function LinkedInAnimation() {
   const pipeline = [
     { label: "Prospects Targeted", count: 480, color: "bg-blue-400", pct: 100, delay: 0.2 },
@@ -897,7 +896,7 @@ export function TestimonialsSection({ industry }: { industry?: string } = {}) {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, []);
 

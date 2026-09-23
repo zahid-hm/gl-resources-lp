@@ -16,6 +16,7 @@ import {
   Play,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TESTIMONIAL_CAROUSEL_ROTATE_MS, TESTIMONIALS, CALL_BULLETS } from "@/lib/constants";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { PageShell } from "@/components/layout/PageShell";
 import { ServiceCapabilities } from "@/components/shared/ServiceCapabilities";
@@ -30,16 +31,22 @@ declare global {
    HUBSPOT CALENDAR EMBED
    ════════════════════════════════════════════════════════════════════════════ */
 
+const HUBSPOT_SCRIPT_URL =
+  process.env.NEXT_PUBLIC_HUBSPOT_SCRIPT_URL ??
+  "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+const HUBSPOT_MEETING_URL =
+  process.env.NEXT_PUBLIC_HUBSPOT_MEETING_URL ??
+  "https://meetings.hubspot.com/jamie-shanks/book-a-discovery-call-with-get-levrg?embed=true";
+
 function HubSpotCalendar() {
   useEffect(() => {
     const existingScript = document.querySelector(
-      'script[src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"]'
+      `script[src="${HUBSPOT_SCRIPT_URL}"]`
     );
     if (!existingScript) {
       const script = document.createElement("script");
       script.type = "text/javascript";
-      script.src =
-        "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+      script.src = HUBSPOT_SCRIPT_URL;
       script.async = true;
       document.body.appendChild(script);
     } else {
@@ -56,7 +63,7 @@ function HubSpotCalendar() {
   return (
     <div
       className="meetings-iframe-container w-full min-h-[600px] sm:min-h-[650px]"
-      data-src="https://meetings.hubspot.com/jamie-shanks/book-a-discovery-call-with-get-levrg?embed=true"
+      data-src={HUBSPOT_MEETING_URL}
     />
   );
 }
@@ -114,16 +121,11 @@ function ThankYouBanner() {
    2. CALENDAR + VIDEO  Two-column layout
    ════════════════════════════════════════════════════════════════════════════ */
 
-const CALL_BULLETS = [
-  "Discuss your current situation and goals",
-  "Identify opportunities for improvement and efficiency",
-  "Share relevant recommendations and insights",
-  "Outline possible next steps based on your needs",
-];
+const THANK_YOU_VIDEO_ID = process.env.NEXT_PUBLIC_THANKYOU_VIDEO_ID ?? "jj7srGIWk08";
 
 function VideoEmbed() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const videoId = "jj7srGIWk08";
+  const videoId = THANK_YOU_VIDEO_ID;
 
   return (
     <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm">
@@ -260,30 +262,6 @@ function CalendarAndVideoSection() {
    3. TESTIMONIALS (carousel)
    ════════════════════════════════════════════════════════════════════════════ */
 
-const TESTIMONIALS = [
-  {
-    quote: "We started on Wednesday and they were delivering by Monday. The speed is unlike anything we've experienced with any other vendor or hire. It just works.",
-    name: "Thomas Buchanan",
-    image: "/images/client/thomas-buchanan.webp",
-    title: "CRO",
-    company: "Sales Tempo",
-  },
-  {
-    quote: "Get Levrg is able to get us right in front of our top-tier ICP. The targeting, the content, the outreach — it's all coordinated in a way our internal team couldn't pull off alone.",
-    name: "Marché Kaanehe",
-    image: "/images/client/marche-kaanehe.webp",
-    title: "Manager of Product Marketing",
-    company: "Cengage Group",
-  },
-  {
-    quote: "Communication with Get Levrg has been very reliable. They show up every week, hit their deliverables, and flag issues before they become problems. That consistency alone is worth it.",
-    name: "Jay Francis",
-    image: "/images/client/jay-francis.webp",
-    title: "Marketing Coordinator",
-    company: "Oxford Medical Simulation Inc.",
-  },
-];
-
 function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -292,7 +270,7 @@ function TestimonialsSection() {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % TESTIMONIALS.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, []);
 

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import disposableDomainsList from "disposable-email-domains";
+import { SUSPICIOUS_KEYWORDS, SUSPICIOUS_TLDS } from "@/lib/constants";
 
 // Checks whether an email's domain can actually receive mail (has an MX
 // record) and whether it's a known disposable/throwaway provider. Doesn't
@@ -10,26 +11,13 @@ import disposableDomainsList from "disposable-email-domains";
 
 const disposableDomains = new Set(disposableDomainsList);
 
-// The disposable-domains list is a static, exact-match snapshot — it won't
-// have a brand-new or mirror temp-mail domain the day it appears. This is a
-// pattern-based supplement, same spirit as the phone check's degenerate-
-// pattern filter: catches domains that *look* like a throwaway service by
-// name or by using a free TLD associated with heavy spam/abuse, even if
-// they're not (yet) on the exact-match list.
-const SUSPICIOUS_KEYWORDS = [
-  "temp", "trash", "fake", "throwaway", "disposable", "guerrilla", "burner",
-  "discard", "spambox", "mailcatch", "tempmail", "trashmail", "10minute",
-  "mintemail", "getnada", "mailnesia", "dispostable", "fakeinbox", "sharklasers",
-];
-const SUSPICIOUS_TLDS = [".tk", ".ml", ".ga", ".cf", ".gq"];
-
 function looksSuspicious(domain: string): boolean {
   const lower = domain.toLowerCase();
   if (SUSPICIOUS_TLDS.some((tld) => lower.endsWith(tld))) return true;
   return SUSPICIOUS_KEYWORDS.some((kw) => lower.includes(kw));
 }
 
-const DOH_ENDPOINT = "https://cloudflare-dns.com/dns-query";
+const DOH_ENDPOINT = process.env.DOH_ENDPOINT ?? "https://cloudflare-dns.com/dns-query";
 
 async function hasMxRecord(domain: string): Promise<boolean | null> {
   const url = new URL(DOH_ENDPOINT);

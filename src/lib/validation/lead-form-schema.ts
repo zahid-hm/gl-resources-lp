@@ -1,20 +1,6 @@
 import { z } from "zod";
 import { parsePhoneNumberFromString } from "libphonenumber-js/min";
-
-// Ported 1:1 from form-field-validator/widget/src/{field,phone}.js — see that
-// repo's README for the reasoning behind each rule. These only catch
-// obviously-wrong input (digits/symbols, too short, keyboard-mash
-// placeholders, structurally-degenerate phone numbers); they never confirm a
-// name/company/number is real, which no free check can prove.
-
-const NAME_PATTERN = /^[\p{L}][\p{L}'\-\s]{1,49}$/u; // letters (any script) + ' - space, 2-50 chars
-const NAME_DENYLIST = new Set(["test", "asdf", "asdfgh", "qwerty", "n/a", "none", "xxx"]);
-const COMPANY_DENYLIST = new Set(["test", "n/a", "none", "asdf", "xxx", "-", ".", "company"]);
-
-// Site-wide default: every lead form is restricted to these countries unless
-// a page explicitly opts out (pass `onlyCountries: null`), matching the
-// widget's previous default.
-export const DEFAULT_ONLY_COUNTRIES = ["US", "CA"];
+import { NAME_PATTERN, NAME_DENYLIST, COMPANY_DENYLIST, DEFAULT_ONLY_COUNTRIES } from "@/lib/constants";
 
 // Catches input that's the right *shape* for some country (so
 // parsePhoneNumberFromString().isValid() would accept it) but is obviously

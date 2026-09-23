@@ -15,6 +15,12 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # running container, supplied via docker-compose's env_file.
 ARG NEXT_PUBLIC_SITE_URL=https://getlevrg.com
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+ARG NEXT_PUBLIC_HUBSPOT_SCRIPT_URL=https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js
+ENV NEXT_PUBLIC_HUBSPOT_SCRIPT_URL=${NEXT_PUBLIC_HUBSPOT_SCRIPT_URL}
+ARG NEXT_PUBLIC_HUBSPOT_MEETING_URL=https://meetings.hubspot.com/jamie-shanks/book-a-discovery-call-with-get-levrg?embed=true
+ENV NEXT_PUBLIC_HUBSPOT_MEETING_URL=${NEXT_PUBLIC_HUBSPOT_MEETING_URL}
+ARG NEXT_PUBLIC_THANKYOU_VIDEO_ID=jj7srGIWk08
+ENV NEXT_PUBLIC_THANKYOU_VIDEO_ID=${NEXT_PUBLIC_THANKYOU_VIDEO_ID}
 RUN npm run build
 
 FROM node:22-alpine AS runner

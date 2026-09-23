@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { HERO_TESTIMONIAL_ROTATE_MS } from "@/lib/constants";
 import {
   ArrowRight, Clock, Star, Play, Pause, Zap, CalendarDays, TrendingUp, VolumeX,
   ListChecks, CheckCircle2, Sparkles, UserCheck, Film, DollarSign,
@@ -216,7 +217,7 @@ function HeroSection() {
   useEffect(() => {
     const timer = setInterval(() => {
       setTestimonialIndex((i) => (i + 1) % testimonials.length);
-    }, 4500);
+    }, HERO_TESTIMONIAL_ROTATE_MS);
     return () => clearInterval(timer);
   }, []);
 

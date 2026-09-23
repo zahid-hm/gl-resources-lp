@@ -1,8 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
-
-const DESKTOP_QUERY = "(min-width: 1024px)"; // matches Tailwind's lg: breakpoint
+import { DESKTOP_QUERY } from "@/lib/constants";
 
 /* ════════════════════════════════════════════════════════════════════════════
    MobileInfoSheet — a native-style bottom sheet: dims the page, slides up

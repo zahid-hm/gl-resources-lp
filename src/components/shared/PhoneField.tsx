@@ -7,7 +7,7 @@ import type { CountryCode } from "libphonenumber-js/min";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { LeadFormValues } from "@/lib/validation/lead-form-schema";
-import { DEFAULT_ONLY_COUNTRIES } from "@/lib/validation/lead-form-schema";
+import { DEFAULT_ONLY_COUNTRIES, GEO_TIMEOUT_MS } from "@/lib/constants";
 
 interface Country {
   iso2: string;
@@ -21,8 +21,6 @@ function loadCountries(): Promise<Country[]> {
   countriesPromise ??= fetch("/data/countries.json").then((r) => r.json());
   return countriesPromise;
 }
-
-const GEO_TIMEOUT_MS = 3000;
 
 interface PhoneFieldProps {
   control: Control<LeadFormValues>;

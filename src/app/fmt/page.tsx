@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { PhoneField } from "@/components/shared/PhoneField";
+import { INTRO_DURATION, TESTIMONIAL_CAROUSEL_ROTATE_MS } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
@@ -59,8 +60,6 @@ import {
 /* ════════════════════════════════════════════════════════════════════════════
    INLINE: Hero Intro Animation (FMT Execution Team Dashboard)
    ════════════════════════════════════════════════════════════════════════════ */
-
-const INTRO_DURATION = 6000;
 
 function FmtAnimation() {
   const workstreams = [
@@ -1109,7 +1108,7 @@ function TestimonialsSection() {
     const timer = setInterval(() => {
       setDirection(1);
       setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, TESTIMONIAL_CAROUSEL_ROTATE_MS);
     return () => clearInterval(timer);
   }, [testimonials.length]);
 
