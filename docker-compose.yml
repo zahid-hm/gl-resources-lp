@@ -1,11 +1,13 @@
-# Used on the EC2 host by .github/workflows/deploy.yml. GHCR_IMAGE, plus the
-# runtime secrets in .env (IPGEO_API_KEY, NEXT_PUBLIC_SITE_URL), are written
-# to the host's .env file by the deploy workflow on every push to main.
 services:
   web:
-    image: ${GHCR_IMAGE}
+    image: gl-resources-lp:latest
     restart: unless-stopped
     ports:
       - "3000:3000"
-    env_file:
-      - .env
+    environment:
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+      - IPGEO_ENDPOINT=${IPGEO_ENDPOINT}
+      - DOH_ENDPOINT=${DOH_ENDPOINT}
+      - NEXT_PUBLIC_HUBSPOT_SCRIPT_URL=${NEXT_PUBLIC_HUBSPOT_SCRIPT_URL}
+      - NEXT_PUBLIC_HUBSPOT_MEETING_URL=${NEXT_PUBLIC_HUBSPOT_MEETING_URL}
+      - NEXT_PUBLIC_THANKYOU_VIDEO_ID=${NEXT_PUBLIC_THANKYOU_VIDEO_ID}

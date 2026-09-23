@@ -50,10 +50,7 @@ export function PageShell({
   // 2. Resolve the base URL from wherever the page is actually being served
   // (production domain, localhost, ...). window is undefined during Next.js's
   // server render, so fall back to the configured public site URL there.
-  const siteUrl =
-    typeof window !== "undefined"
-      ? window.location.origin
-      : (process.env.NEXT_PUBLIC_SITE_URL ?? "https://getlevrg.com");
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
 
   // 3. Fallback image if a specific page doesn't have a hero image
   const defaultOgImage = "/images/hero/video-hero.webp";
