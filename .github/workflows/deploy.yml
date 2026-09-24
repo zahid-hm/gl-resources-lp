@@ -20,7 +20,7 @@ jobs:
       - name: Build Image
         run: |
           docker build \
-            --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
+            --build-arg NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }} \
             -t gl-resources-lp:latest \
             -f ./Dockerfile \
             .
