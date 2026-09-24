@@ -1,74 +1,78 @@
-name: Deploy to EC2
+name: Deploy
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch: {}
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    outputs:
-      image: ${{ steps.meta.outputs.image }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: docker/setup-buildx-action@v3
-
-      - uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - id: meta
-        run: echo "image=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}" >> "$GITHUB_OUTPUT"
-
-      - uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          build-args: |
-            NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ steps.meta.outputs.image }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   deploy:
-    needs: build-and-push
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy over SSH
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Image
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
+            -t gl-resources-lp:latest \
+            -f ./Dockerfile \
+            .
+
+      - name: Save and Compress Image
+        run: |
+          echo "Saving image..."
+          docker save gl-resources-lp:latest | gzip > gl-resources-lp.tar.gz
+          echo "Image size:"
+          du -sh gl-resources-lp.tar.gz
+
+      # - name: Prepare docker-compose file
+      #   run: cp docker-compose.prod.yml docker-compose.yml
+
+      - name: Create .env file
+        run: | 
+          touch .env
+          echo "NEXT_PUBLIC_SITE_URL=${{secrets.NEXT_PUBLIC_SITE_URL}}" >> .env
+          echo "IPWHOIS_ENDPOINT=${{secrets.IPWHOIS_ENDPOINT}}" >> .env
+          echo "DOH_ENDPOINT=${{secrets.DOH_ENDPOINT}}" >> .env
+          echo "NEXT_PUBLIC_HUBSPOT_SCRIPT_URL=${{secrets.NEXT_PUBLIC_HUBSPOT_SCRIPT_URL}}" >> .env
+          echo "NEXT_PUBLIC_HUBSPOT_MEETING_URL=${{secrets.NEXT_PUBLIC_HUBSPOT_MEETING_URL}}" >> .env
+          echo "NEXT_PUBLIC_THANKYOU_VIDEO_ID=${{secrets.NEXT_PUBLIC_THANKYOU_VIDEO_ID}}" >> .env
+
+      - name: Transfer Files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: ".env,gl-resources-lp.tar.gz"
+          target: ${{ github.event.repository.name }}
+
+      - name: Deploy Containers on VPS
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: ${{ secrets.EC2_SSH_PORT || 22 }}
-          envs: GHCR_IMAGE,GH_ACTOR,GH_TOKEN,SITE_URL,APP_DIR
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            set -e
-            cd "${APP_DIR:-$HOME/gl-resources-lp}"
-            echo "$GH_TOKEN" | docker login ghcr.io -u "$GH_ACTOR" --password-stdin
-            cat > .env <<EOF
-            GHCR_IMAGE=${GHCR_IMAGE}
-            NEXT_PUBLIC_SITE_URL=${SITE_URL}
-            EOF
-            docker compose pull
-            docker compose up -d
+            cd ~/${{ github.event.repository.name }}
+            
+            echo 'Loading image...'
+            docker load -i gl-resources-lp.tar.gz
+            
+            echo 'Restarting containers with docker compose...'
+            docker compose up -d --force-recreate --remove-orphans
+            
+            echo 'Cleaning up transfer archives...'
+            rm -f gl-resources-lp.tar.gz
+            
+            echo 'Cleaning up dangling/unused docker images...'
             docker image prune -f
-        env:
-          GHCR_IMAGE: ${{ needs.build-and-push.outputs.image }}
-          GH_ACTOR: ${{ github.actor }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
-          APP_DIR: ${{ secrets.EC2_APP_DIR }}
+            
+            echo 'Deployment successful!'

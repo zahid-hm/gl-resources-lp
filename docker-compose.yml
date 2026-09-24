@@ -3,7 +3,7 @@ services:
     image: gl-resources-lp:latest
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3005:3000"
     environment:
       - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
       - IPWHOIS_ENDPOINT=${IPWHOIS_ENDPOINT}
