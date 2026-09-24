@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { workSampleSrcSet, WORK_SAMPLE_SIZES } from "@/lib/responsive-image";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { PhoneField } from "@/components/shared/PhoneField";
 import { INTRO_DURATION, TESTIMONIAL_CAROUSEL_ROTATE_MS } from "@/lib/constants";
@@ -127,7 +128,7 @@ function WebsiteAnimation() {
   ];
   const metrics = [
     { icon: Zap, label: "Page Load", value: "1.6s", delay: 0.3, accent: "bg-amber-50 border-amber-200", iconColor: "text-amber-500", valueColor: "text-amber-700" },
-    { icon: TrendingUp, label: "Monthly Leads", value: "+312%", delay: 0.6, accent: "bg-spark-50 border-spark-200", iconColor: "text-spark-600", valueColor: "text-[#51B027]" },
+    { icon: TrendingUp, label: "Monthly Leads", value: "+312%", delay: 0.6, accent: "bg-spark-50 border-spark-200", iconColor: "text-spark-600", valueColor: "text-[#4A6F27]" },
     { icon: Target, label: "Conv. Rate", value: "4.8%", delay: 0.9, accent: "bg-violet-50 border-violet-200", iconColor: "text-violet-500", valueColor: "text-violet-700" },
     { icon: Search, label: "Google Rank", value: "#1–3", delay: 1.2, accent: "bg-blue-50 border-blue-200", iconColor: "text-blue-500", valueColor: "text-blue-700" },
   ];
@@ -146,7 +147,7 @@ function WebsiteAnimation() {
               <div className="relative flex-1 h-8 rounded-lg bg-gray-100 overflow-hidden">
                 <motion.div initial={{ width: 0 }} animate={{ width: `${score.pct}%` }} transition={{ duration: 1.2, delay: score.delay + 0.1, ease: "easeOut" }} className={`absolute inset-y-0 left-0 ${score.color} rounded-lg opacity-70`} />
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-700 z-10">{score.label}</span>
-                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: score.delay + 0.8 }} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-500 z-10">{score.value}</motion.span>
+                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: score.delay + 0.8 }} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-700 z-10">{score.value}</motion.span>
               </div>
             </div>
           </motion.div>
@@ -213,29 +214,29 @@ function HeroSection() {
   return (
     <section id="lead-form" className="relative overflow-hidden min-h-[500px] sm:min-h-[600px]">
       <div className="absolute inset-0">
-        <img src="/images/hero/website-optimization-hero.webp" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
+        <img src="/images/hero/website-optimization-hero.webp" srcSet="/images/hero/website-optimization-hero-sm.webp 800w, /images/hero/website-optimization-hero.webp 1440w" sizes="100vw" width="1440" height="786" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#061512]/95 via-[#061512]/70 to-transparent" />
 
       <div className="relative z-10 max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-3">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
+            <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
               <Activity className="h-3.5 w-3.5 text-spark-300" />
               <span className="text-sm-body font-medium text-white">Website Development &amp; Optimization</span>
-            </motion.div>
+            </div>
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-h1 sm:text-display lg:text-display-sm text-white mb-6">
+            <h1 className="gl-reveal gl-d1 text-h1 sm:text-display lg:text-display-sm text-white mb-6">
               Your Website Should Work
               <br />
               <span className="text-spark-400">While You Sleep. Is It?</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-body sm:text-sub text-gray-300 max-w-4xl mb-8">
+            <p className="gl-reveal gl-d2 text-body sm:text-sub text-gray-300 max-w-4xl mb-8">
               A slow, outdated or under-optimized website costs you leads every day. Get a dedicated team that builds, optimizes, and maintains your web presence so your site ranks, loads fast, and converts visitors into paying clients.
-            </motion.p>
+            </p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
+            <div className="gl-reveal gl-d3 flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
               {[
                 { icon: Zap, text: "30-Day Launch" },
                 { icon: BarChart3, text: "14 Deliverables Included" },
@@ -249,9 +250,9 @@ function HeroSection() {
                   </span>
                 );
               })}
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-4xl">
+            <div className="gl-reveal gl-d4 relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-4xl">
               <Quote className="absolute top-4 left-5 h-5 w-5 text-spark-300" />
               <p className="text-sm-body sm:text-body text-gray-200 italic mb-3 pl-8">
                 &ldquo;We went from page 5 on Google to position 2 for our main keyword in 8 weeks. Inbound leads tripled without spending an extra dollar on ads.&rdquo;
@@ -269,7 +270,7 @@ function HeroSection() {
                   <p className="text-xs text-gray-400">B2B SaaS Platform ($12M ARR)</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <HeroFormIntro>
@@ -540,7 +541,7 @@ export function DeliverablesSection() {
             <div className="grid grid-cols-2 grid-rows-3 gap-3 sm:gap-4 h-[480px] sm:h-[560px]">
               {bentoImages.map((img, i) => (
                 <div key={i} className={`relative rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 group ${img.span}`}>
-                  <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={img.src} srcSet={workSampleSrcSet(img.src)} sizes={WORK_SAMPLE_SIZES} alt={img.alt} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                 </div>
               ))}

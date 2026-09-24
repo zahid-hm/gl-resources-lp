@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { workSampleSrcSet, WORK_SAMPLE_SIZES } from "@/lib/responsive-image";
 import {
   ArrowRight, Zap, TrendingUp, Shield, Star, CalendarDays, Lock, Mail,
   Monitor, Film, Video, Sparkles, Palette,
@@ -52,8 +52,7 @@ function HeroSection() {
       className="relative overflow-hidden bg-white min-h-[500px] sm:min-h-[680px]"
     >
       <div className="absolute inset-0">
-        <img
-          src="/images/hero/video-it-services-hero.webp"
+        <img src="/images/hero/video-it-services-hero.webp" srcSet="/images/hero/video-it-services-hero-sm.webp 800w, /images/hero/video-it-services-hero.webp 1440w" sizes="100vw" width="1440" height="804"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
@@ -67,46 +66,26 @@ function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
 
           <div className="lg:col-span-3">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8"
-            >
+            <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
               <Zap className="h-3.5 w-3.5 text-spark-300" />
               <span className="text-sm-body font-medium text-white">
                 Video for IT Service Providers
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-h1 sm:text-display lg:text-display-sm text-white mb-6"
-            >
+            <h1 className="gl-reveal gl-d1 text-h1 sm:text-display lg:text-display-sm text-white mb-6">
               Product And Service Videos
               <br />
               <span className="text-[#51B027]">
                 Without An In-House Team
               </span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-body sm:text-sub text-gray-300 max-w-2xl mb-8"
-            >
+            <p className="gl-reveal gl-d2 text-body sm:text-sub text-gray-300 max-w-2xl mb-8">
               Get a dedicated video team that creates product walkthroughs, service explainers, and client testimonial videos so prospects understand your value before the first call.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10"
-            >
+            <div className="gl-reveal gl-d3 flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
               {[
                 { icon: Zap, text: "Launch in 14 Days" },
                 { icon: CalendarDays, text: "48-Hour Turnaround" },
@@ -123,14 +102,9 @@ function HeroSection() {
                   </span>
                 );
               })}
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-2xl"
-            >
+            <div className="gl-reveal gl-d4 relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-2xl">
               <div className="flex items-center gap-1 mb-3">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-3.5 w-3.5 text-spark-500 fill-spark-500" />
@@ -153,7 +127,7 @@ function HeroSection() {
                   <p className="text-xs text-gray-400">Brand &amp; Social Media Manager | Empellor CRM</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <HeroFormIntro animation={<VideoAnimation config={{
@@ -161,7 +135,7 @@ function HeroSection() {
             headerTitle: "Tech Content",
             stats: [
               { icon: Film, label: "Product Demos", value: "6/mo", delay: 0.5, accent: "bg-sky-50 border-sky-200", iconColor: "text-sky-500", valueColor: "text-sky-700" },
-              { icon: Video, label: "Service Explainers", value: "4/mo", delay: 0.8, accent: "bg-spark-50 border-spark-200", iconColor: "text-spark-600", valueColor: "text-[#51B027]" },
+              { icon: Video, label: "Service Explainers", value: "4/mo", delay: 0.8, accent: "bg-spark-50 border-spark-200", iconColor: "text-spark-600", valueColor: "text-[#4A6F27]" },
               { icon: Sparkles, label: "Client Testimonials", value: "4/mo", delay: 1.1, accent: "bg-teal-50 border-teal-200", iconColor: "text-teal-500", valueColor: "text-teal-700" },
               { icon: Palette, label: "Social Clips", value: "10/mo", delay: 1.4, accent: "bg-amber-50 border-amber-200", iconColor: "text-amber-500", valueColor: "text-amber-700" },
             ],
@@ -401,6 +375,8 @@ export function SEOSection() {
                 >
                   <img
                     src={img.src}
+                    srcSet={workSampleSrcSet(img.src)}
+                    sizes={WORK_SAMPLE_SIZES}
                     alt={img.alt}
                     loading="lazy"
                     decoding="async"

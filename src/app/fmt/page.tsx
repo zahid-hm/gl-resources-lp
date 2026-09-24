@@ -64,7 +64,7 @@ import {
 function FmtAnimation() {
   const workstreams = [
     { icon: Share2, label: "Content & Social", status: "Active", tasks: "12 posts queued", accent: "bg-sky-50 border-sky-200", iconColor: "text-sky-500", statusColor: "text-sky-600" },
-    { icon: Send, label: "GTM Outbound", status: "Active", tasks: "340 sequences live", accent: "bg-spark-50 border-spark-200", iconColor: "text-spark-600", statusColor: "text-[#51B027]" },
+    { icon: Send, label: "GTM Outbound", status: "Active", tasks: "340 sequences live", accent: "bg-spark-50 border-spark-200", iconColor: "text-spark-600", statusColor: "text-[#4A6F27]" },
     { icon: Database, label: "CRM & RevOps", status: "Active", tasks: "87% pipeline clean", accent: "bg-emerald-50 border-emerald-200", iconColor: "text-emerald-500", statusColor: "text-emerald-700" },
     { icon: Globe, label: "Web & CRO", status: "Active", tasks: "3 pages live", accent: "bg-amber-50 border-amber-200", iconColor: "text-amber-500", statusColor: "text-amber-700" },
   ];
@@ -221,7 +221,7 @@ function HeroSection() {
   return (
     <section id="lead-form" className="relative overflow-hidden bg-white min-h-[500px] sm:min-h-[680px]">
       <div className="absolute inset-0">
-        <img src="/images/hero/fmt-hero.webp" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
+        <img src="/images/hero/fmt-hero.webp" srcSet="/images/hero/fmt-hero-sm.webp 800w, /images/hero/fmt-hero.webp 1434w" sizes="100vw" width="1434" height="800" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#061512]/95 via-[#061512]/70 to-transparent" />
 
@@ -229,44 +229,24 @@ function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
 
           <div className="lg:col-span-3">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8"
-            >
+            <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
               <Zap className="h-3.5 w-3.5 text-spark-300" />
               <span className="text-sm-body font-medium text-white">
                 Fractional Marketing &amp; Sales Execution Team
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-h1 sm:text-display lg:text-display-sm text-white mb-6"
-            >
+            <h1 className="gl-reveal gl-d1 text-h1 sm:text-display lg:text-display-sm text-white mb-6">
               Stop Paying Senior Talent
               <br />
               <span className="text-[#51B027]">To Do Execution Work</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-body sm:text-sub text-gray-300 max-w-2xl mb-8"
-            >
+            <p className="gl-reveal gl-d2 text-body sm:text-sub text-gray-300 max-w-2xl mb-8">
               A fully managed execution team handling content, campaigns, CRM, outbound, video, and operations so your internal team focuses on growth, leadership, and revenue.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10"
-            >
+            <div className="gl-reveal gl-d3 flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
               {[
                 { icon: Zap, text: "Deploy in 7 Days" },
                 { icon: CalendarDays, text: "Predictable Weekly Output" },
@@ -280,14 +260,9 @@ function HeroSection() {
                   </span>
                 );
               })}
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-2xl"
-            >
+            <div className="gl-reveal gl-d4 relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-2xl">
               <div className="flex items-center gap-1 mb-3">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-3.5 w-3.5 text-spark-500 fill-spark-500" />
@@ -311,7 +286,7 @@ function HeroSection() {
                   <p className="text-xs text-gray-400">CRO | Sales Tempo</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <HeroFormIntro>
@@ -747,7 +722,7 @@ function BeforeAfterSection() {
                 <tr>
                   <th className="text-left px-6 py-4 bg-gray-50 text-gray-600 font-semibold w-1/3 border-b border-gray-200">Area</th>
                   <th className="text-left px-6 py-4 bg-red-50 text-red-700 font-semibold w-1/3 border-b border-red-200">Before Get Levrg</th>
-                  <th className="text-left px-6 py-4 bg-spark-50 text-[#51B027] font-semibold w-1/3 border-b border-spark-200">After Get Levrg</th>
+                  <th className="text-left px-6 py-4 bg-spark-50 text-[#4A6F27] font-semibold w-1/3 border-b border-spark-200">After Get Levrg</th>
                 </tr>
               </thead>
               <tbody>
@@ -759,7 +734,7 @@ function BeforeAfterSection() {
                         <X className="h-4 w-4 text-red-400 shrink-0" /><span>{row.before}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-left text-sm-body text-[#51B027] font-medium bg-spark-50/30">
+                    <td className="px-6 py-4 text-left text-sm-body text-[#4A6F27] font-medium bg-spark-50/30">
                       <div className="flex items-left justify-left gap-2">
                         <CheckCircle className="h-4 w-4 text-spark-500 shrink-0" /><span>{row.after}</span>
                       </div>

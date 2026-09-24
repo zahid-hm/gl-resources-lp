@@ -1,5 +1,86 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+
+/**
+ * Scroll-reveal primitives.
+ *
+ * These used to be Framer Motion components. Each instance mounted a
+ * MotionValue graph and its own `useInView` observer, and — because Framer
+ * renders its `initial` state during SSR — shipped `style="opacity:0"` in the
+ * HTML for every revealed block on the page. Landing pages here render
+ * hundreds of them, so that was a large slice of hydration time and main-thread
+ * work for animations the compositor can run on its own.
+ *
+ * The behaviour is identical, but the animation itself is now plain CSS
+ * (see `.gl-scroll-reveal` / `.gl-stagger` in globals.css) and visibility is
+ * driven by a single shared IntersectionObserver per root-margin instead of one
+ * per element.
+ */
+
+type Observed = (isIntersecting: boolean) => void;
+
+const observers = new Map<string, IntersectionObserver>();
+const callbacks = new WeakMap<Element, Observed>();
+
+function getObserver(margin: string): IntersectionObserver {
+  let observer = observers.get(margin);
+  if (!observer) {
+    observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          callbacks.get(entry.target)?.(entry.isIntersecting);
+        }
+      },
+      { rootMargin: margin, threshold: 0 }
+    );
+    observers.set(margin, observer);
+  }
+  return observer;
+}
+
+/** Adds `gl-in` to the element once it scrolls into view. */
+function useInViewClass(
+  ref: React.RefObject<HTMLElement | null>,
+  { once = true, margin = "-80px" }: { once?: boolean; margin?: string } = {}
+) {
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // Older browsers (and anything where the observer fails to construct) get
+    // the content immediately rather than a permanently invisible page.
+    // Deferred to the next frame so the reveal never lands in the same commit
+    // as the effect that scheduled it.
+    if (typeof IntersectionObserver === "undefined") {
+      const frame = requestAnimationFrame(() => setInView(true));
+      return () => cancelAnimationFrame(frame);
+    }
+
+    const observer = getObserver(margin);
+    callbacks.set(el, (isIntersecting) => {
+      if (isIntersecting) {
+        setInView(true);
+        if (once) {
+          observer.unobserve(el);
+          callbacks.delete(el);
+        }
+      } else if (!once) {
+        setInView(false);
+      }
+    });
+    observer.observe(el);
+
+    return () => {
+      observer.unobserve(el);
+      callbacks.delete(el);
+    };
+  }, [ref, once, margin]);
+
+  return inView;
+}
 
 interface AnimatedSectionProps {
   children: React.ReactNode;
@@ -10,6 +91,14 @@ interface AnimatedSectionProps {
   stagger?: number;
 }
 
+const OFFSETS: Record<string, { x: string; y: string }> = {
+  up: { x: "0", y: "40px" },
+  down: { x: "0", y: "-40px" },
+  left: { x: "40px", y: "0" },
+  right: { x: "-40px", y: "0" },
+  none: { x: "0", y: "0" },
+};
+
 export function AnimatedSection({
   children,
   className = "",
@@ -18,33 +107,24 @@ export function AnimatedSection({
   once = true,
   stagger = 0,
 }: AnimatedSectionProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once, margin: "-80px" });
-
-  const directionMap = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { x: 40, y: 0 },
-    right: { x: -40, y: 0 },
-    none: { x: 0, y: 0 },
-  };
-
-  const offset = directionMap[direction];
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInViewClass(ref, { once });
+  const offset = OFFSETS[direction] ?? OFFSETS.up;
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, ...offset }}
-      animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...offset }}
-      transition={{
-        duration: 0.6,
-        delay: delay + stagger,
-        ease: [0.21, 0.47, 0.32, 0.98],
-      }}
-      className={className}
+      className={`gl-scroll-reveal${inView ? " gl-in" : ""} ${className}`}
+      style={
+        {
+          "--gl-x": offset.x,
+          "--gl-y": offset.y,
+          "--gl-delay": `${delay + stagger}s`,
+        } as React.CSSProperties
+      }
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -57,24 +137,17 @@ export function StaggerContainer({
   className?: string;
   staggerDelay?: number;
 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInViewClass(ref, { once: true, margin: "-60px" });
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: { staggerChildren: staggerDelay },
-        },
-      }}
-      className={className}
+      className={`gl-stagger${inView ? " gl-in" : ""} ${className}`}
+      style={{ "--gl-stagger": `${staggerDelay}s` } as React.CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -85,21 +158,7 @@ export function StaggerItem({
   children: React.ReactNode;
   className?: string;
 }) {
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] },
-        },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={`gl-stagger-item ${className}`}>{children}</div>;
 }
 
 export function FloatingElement({
@@ -114,13 +173,17 @@ export function FloatingElement({
   duration?: number;
 }) {
   return (
-    <motion.div
-      animate={{ y: [-amplitude, amplitude, -amplitude] }}
-      transition={{ duration, repeat: Infinity, ease: "easeInOut" }}
-      className={className}
+    <div
+      className={`gl-float ${className}`}
+      style={
+        {
+          "--gl-amp": `${amplitude}px`,
+          "--gl-float-dur": `${duration}s`,
+        } as React.CSSProperties
+      }
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -135,30 +198,29 @@ export function CountUp({
   suffix?: string;
   className?: string;
 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInViewClass(ref, { once: true, margin: "0px" });
   const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (!isInView) return;
-    let start = 0;
-    const end = target;
-    const duration = 2000;
-    const stepTime = 20;
-    const steps = duration / stepTime;
-    const increment = end / steps;
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, stepTime);
-
-    return () => clearInterval(timer);
+    // rAF instead of a 20ms interval: the old timer fired ~100 React renders
+    // per counter regardless of whether the browser was ready to paint.
+    // 1ms rather than 0 so the progress ratio can never be 0/0.
+    const duration = reduceMotion ? 1 : 2000;
+    let frame = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      setCount(Math.floor(target * progress));
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
   }, [isInView, target]);
 
   return (

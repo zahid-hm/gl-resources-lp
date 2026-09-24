@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { workSampleSrcSet, WORK_SAMPLE_SIZES } from "@/lib/responsive-image";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { PhoneField } from "@/components/shared/PhoneField";
 import { INTRO_DURATION, TESTIMONIAL_CAROUSEL_ROTATE_MS } from "@/lib/constants";
@@ -126,7 +127,7 @@ function CrmAnimation() {
   ];
   const metrics = [
     { icon: Database, label: "Duplicates Found", value: "1,247", delay: 0.3, accent: "bg-blue-50 border-blue-200", iconColor: "text-blue-500", valueColor: "text-blue-700" },
-    { icon: BarChart3, label: "Pipeline Accuracy", value: "87%", delay: 0.6, accent: "bg-spark-50 border-spark-200", iconColor: "text-spark-600", valueColor: "text-[#51B027]" },
+    { icon: BarChart3, label: "Pipeline Accuracy", value: "87%", delay: 0.6, accent: "bg-spark-50 border-spark-200", iconColor: "text-spark-600", valueColor: "text-[#4A6F27]" },
     { icon: TrendingUp, label: "Revenue Recovered", value: "$840K", delay: 0.9, accent: "bg-emerald-50 border-emerald-200", iconColor: "text-emerald-500", valueColor: "text-emerald-700" },
     { icon: Users, label: "Deals Discovered", value: "47", delay: 1.2, accent: "bg-amber-50 border-amber-200", iconColor: "text-amber-500", valueColor: "text-amber-700" },
   ];
@@ -145,7 +146,7 @@ function CrmAnimation() {
               <div className="relative flex-1 h-8 rounded-lg bg-gray-100 overflow-hidden">
                 <motion.div initial={{ width: 0 }} animate={{ width: `${stage.pct}%` }} transition={{ duration: 1.2, delay: 0.3 + i * 0.4, ease: "easeOut" }} className={`absolute inset-y-0 left-0 ${stage.color} rounded-lg opacity-70`} />
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-700 z-10">{stage.label}</span>
-                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 + i * 0.4 }} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-500 z-10">{stage.count}</motion.span>
+                <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 + i * 0.4 }} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-700 z-10">{stage.count}</motion.span>
               </div>
             </div>
           </motion.div>
@@ -238,8 +239,7 @@ function HeroSection() {
     >
 
       <div className="absolute inset-0">
-        <img
-          src="/images/hero/crm-hero.webp"
+        <img src="/images/hero/crm-hero.webp" srcSet="/images/hero/crm-hero-sm.webp 800w, /images/hero/crm-hero.webp 1408w" sizes="100vw" width="1408" height="768"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
@@ -255,49 +255,29 @@ function HeroSection() {
 
           <div className="lg:col-span-3">
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8"
-            >
+            <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
               <Activity className="h-3.5 w-3.5 text-spark-300" />
               <span className="text-sm-body font-medium text-white">
                 CRM &amp; Sales Data Optimization
               </span>
-            </motion.div>
+            </div>
 
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-h1 sm:text-display lg:text-display-sm text-white mb-6"
-            >
+            <h1 className="gl-reveal gl-d1 text-h1 sm:text-display lg:text-display-sm text-white mb-6">
               You&apos;re Paying for HubSpot
               <br />
               <span className="text-spark-400">You&apos;re Using 20% of It</span>
-            </motion.h1>
+            </h1>
 
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-body sm:text-sub text-gray-300 max-w-2xl mb-8"
-            >
+            <p className="gl-reveal gl-d2 text-body sm:text-sub text-gray-300 max-w-2xl mb-8">
               Your CRM is an expensive filing cabinet. No workflows. No clean
               data. No visibility. Get a dedicated team that optimizes your
               HubSpot instance in 14 days—so your CRM actually drives revenue.
-            </motion.p>
+            </p>
 
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10"
-            >
+            <div className="gl-reveal gl-d3 flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
               {[
                 { icon: Zap, text: "14-Day Optimization" },
                 { icon: DollarSign, text: "1/3 Cost of Hiring" },
@@ -314,15 +294,10 @@ function HeroSection() {
                   </span>
                 );
               })}
-            </motion.div>
+            </div>
 
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-2xl"
-            >
+            <div className="gl-reveal gl-d4 relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-2xl">
               <p className="text-sm-body sm:text-body text-gray-200 italic mb-3">
                 &ldquo;We thought we needed to upgrade our HubSpot tier. Turns out,
                 we just needed someone to actually set it up properly. We went from
@@ -345,7 +320,7 @@ function HeroSection() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
 
           </div>
@@ -697,7 +672,7 @@ export function SEOSection() {
             <div className="grid grid-cols-2 grid-rows-3 gap-3 sm:gap-4 h-[480px] sm:h-[560px]">
               {bentoImages.map((img, i) => (
                 <div key={i} className={`relative rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 group ${img.span}`}>
-                  <img src={img.src} alt={img.alt} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={img.src} srcSet={workSampleSrcSet(img.src)} sizes={WORK_SAMPLE_SIZES} alt={img.alt} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                 </div>
               ))}

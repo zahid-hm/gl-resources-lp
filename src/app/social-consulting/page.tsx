@@ -3,7 +3,6 @@
 import React from "react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { PhoneField } from "@/components/shared/PhoneField";
-import { motion } from "framer-motion";
 import { ArrowRight, Smartphone, Clock, Quote, Lock, Mail, Shield, BookOpen } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
 import { TrustedByMarquee } from "@/components/shared/TrustedByMarquee";
@@ -43,29 +42,29 @@ function HeroSection() {
   return (
     <section id="lead-form" className="relative overflow-hidden min-h-[500px] sm:min-h-[600px]">
       <div className="absolute inset-0">
-        <img src="/images/hero/social-consulting-hero.webp" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
+        <img src="/images/hero/social-consulting-hero.webp" srcSet="/images/hero/social-consulting-hero-sm.webp 800w, /images/hero/social-consulting-hero.webp 1440w" sizes="100vw" width="1440" height="786" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#061512]/95 via-[#061512]/70 to-transparent" />
 
       <div className="relative z-10 max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-3">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
+            <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
               <BookOpen className="h-3.5 w-3.5 text-spark-300" />
               <span className="text-sm-body font-medium text-white">Social Media for Consulting Firms</span>
-            </motion.div>
+            </div>
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-h1 sm:text-display lg:text-display-sm text-white mb-6">
+            <h1 className="gl-reveal gl-d1 text-h1 sm:text-display lg:text-display-sm text-white mb-6">
               Get Consulting Insights In Front Of Decision-Makers
               <br />
               <span className="text-spark-400">Your Insights Are Valuable. They&apos;re Stuck In Slide Decks.</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-body sm:text-sub text-gray-300 max-w-2xl mb-8">
+            <p className="gl-reveal gl-d2 text-body sm:text-sub text-gray-300 max-w-2xl mb-8">
               Get a social media team that transforms your consulting expertise into LinkedIn thought leadership, case study highlights, and industry commentary reaching the decision-makers who hire firms like yours.
-            </motion.p>
+            </p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
+            <div className="gl-reveal gl-d3 flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
               {[
                 { icon: Smartphone, text: "12-20 Posts Monthly" },
                 { icon: Clock, text: "Live in 14 Days" },
@@ -79,9 +78,9 @@ function HeroSection() {
                   </span>
                 );
               })}
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-2xl">
+            <div className="gl-reveal gl-d4 relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-2xl">
               <Quote className="absolute top-4 left-5 h-5 w-5 text-spark-300" />
               <p className="text-sm-body sm:text-body text-gray-200 italic mb-3 pl-8">
                 &ldquo;We were too busy doing client work to build our own brand. That changed completely. Our consultants are now recognized as thought leaders, and the inbound speaks for itself.&rdquo;
@@ -99,7 +98,7 @@ function HeroSection() {
                   <p className="text-xs text-gray-400">Founder | Martinez Organizational Development</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <HeroFormIntro>

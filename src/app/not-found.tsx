@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col">
+      <title>Page Not Found | Get Levrg</title>
+      <meta name="description" content="The page you are looking for does not exist or may have moved." />
+      <meta name="robots" content="noindex, nofollow" />
       <Header hideCta />
       <main className="flex-1 pt-16 sm:pt-20 flex items-center justify-center">
         <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">

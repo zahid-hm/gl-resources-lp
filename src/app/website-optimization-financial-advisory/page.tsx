@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowRight, Zap, BarChart3, TrendingUp, Quote } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
 import { TrustedByMarquee } from "@/components/shared/TrustedByMarquee";
@@ -42,29 +41,29 @@ function HeroSection() {
   return (
     <section id="lead-form" className="relative overflow-hidden min-h-[500px] sm:min-h-[600px]">
       <div className="absolute inset-0">
-        <img src="/images/hero/website-optimization-financial-advisory-hero.webp" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
+        <img src="/images/hero/website-optimization-financial-advisory-hero.webp" srcSet="/images/hero/website-optimization-financial-advisory-hero-sm.webp 800w, /images/hero/website-optimization-financial-advisory-hero.webp 1440w" sizes="100vw" width="1440" height="804" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#061512]/95 via-[#061512]/70 to-transparent" />
 
       <div className="relative z-10 max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-3">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
+            <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
               <TrendingUp className="h-3.5 w-3.5 text-spark-300" />
               <span className="text-sm-body font-medium text-white">Website Optimization for Financial Advisors</span>
-            </motion.div>
+            </div>
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-h1 sm:text-display lg:text-display-sm text-white mb-6">
+            <h1 className="gl-reveal gl-d1 text-h1 sm:text-display lg:text-display-sm text-white mb-6">
               A Site That Builds Confidence Before The First Call
               <br />
               <span className="text-spark-400">People Google You Before They Trust You With Their Money.</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-body sm:text-sub text-gray-300 max-w-4xl mb-8">
+            <p className="gl-reveal gl-d2 text-body sm:text-sub text-gray-300 max-w-4xl mb-8">
               Get a team that builds a trust-first website for your advisory practice professional bios, client testimonials, educational content, and compliance-friendly design that converts visitors into booked meetings.
-            </motion.p>
+            </p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
+            <div className="gl-reveal gl-d3 flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
               {[
                 { icon: Zap, text: "30-Day Launch" },
                 { icon: BarChart3, text: "14 Deliverables Included" },
@@ -78,9 +77,9 @@ function HeroSection() {
                   </span>
                 );
               })}
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-4xl">
+            <div className="gl-reveal gl-d4 relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-4xl">
               <Quote className="absolute top-4 left-5 h-5 w-5 text-spark-300" />
               <p className="text-sm-body sm:text-body text-gray-200 italic mb-3 pl-8">
                 &ldquo;We&apos;re a financial advisory firm trust is everything. The new site with updated security, fast load times, and clear credibility signals made a visible difference. Prospects comment on our website in sales calls now.&rdquo;
@@ -98,7 +97,7 @@ function HeroSection() {
                   <p className="text-xs text-gray-400">Chief Growth Officer, Independent RIA</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <HeroFormIntro>

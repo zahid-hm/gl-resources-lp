@@ -82,26 +82,16 @@ function ThankYouBanner() {
 
       <div className="relative z-10 max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div className="text-center max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-spark-50 border border-spark-200 mb-6"
-          >
+          <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-spark-50 border border-spark-200 mb-6">
             <CheckCircle className="h-4 w-4 text-spark-600" />
             <span className="text-sm-body font-medium text-spark-700">
               Request Received
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-h1 sm:text-display text-gray-900 mb-4"
-          >
+          <h1 className="gl-reveal gl-d1 text-h1 sm:text-display text-gray-900 mb-4">
             Thanks! We&apos;ll Be{" "}<span className="text-[#51B027]">In Touch Shortly</span>
-          </motion.h1>
+          </h1>
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
@@ -171,12 +161,7 @@ function CalendarAndVideoSection() {
       <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
           {/* LEFT COLUMN  60%  HUBSPOT CALENDAR */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-3"
-          >
+          <div className="gl-reveal gl-d1 lg:col-span-3">
             <div id="calendar" className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100 bg-white">
                 <div className="flex items-center gap-3">
@@ -207,15 +192,10 @@ function CalendarAndVideoSection() {
                 <HubSpotCalendar />
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* RIGHT COLUMN  40%  VIDEO + EXPLANATION */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-2 space-y-6"
-          >
+          <div className="gl-reveal gl-d2 lg:col-span-2 space-y-6">
             <VideoEmbed />
 
             <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm">
@@ -251,7 +231,7 @@ function CalendarAndVideoSection() {
                 </span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

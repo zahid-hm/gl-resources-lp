@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { parsePhoneNumberFromString } from "libphonenumber-js/min";
+import { loadPhoneMetadata } from "@/lib/phone-metadata";
 import { NAME_PATTERN, NAME_DENYLIST, COMPANY_DENYLIST, DEFAULT_ONLY_COUNTRIES } from "@/lib/constants";
 
 // Catches input that's the right *shape* for some country (so
@@ -101,10 +101,15 @@ export function buildLeadFormSchema(options: LeadFormSchemaOptions = {}) {
       phone: z.string().trim().min(1, "Phone number is required."),
       phoneCountry: z.string().min(2),
     })
-    .superRefine((data, ctx) => {
+    .superRefine(async (data, ctx) => {
       const intl = data.phone.trim().startsWith("+");
       const raw = data.phone.replace(/[^\d+]/g, "");
       if (!raw.replace(/\+/g, "")) return; // empty handled by the min(1) check above
+
+      // Country metadata is code-split out of the page bundle; the resolver
+      // already parses asynchronously (the email check below is async too), so
+      // awaiting it here costs nothing and never skips the check.
+      const { parsePhoneNumberFromString } = await loadPhoneMetadata();
 
       const phoneNumber = intl
         ? parsePhoneNumberFromString(raw)

@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useController, type Control } from "react-hook-form";
-import { AsYouType } from "libphonenumber-js/min";
 import type { CountryCode } from "libphonenumber-js/min";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { loadPhoneMetadata, peekPhoneMetadata, warmPhoneMetadata } from "@/lib/phone-metadata";
 import type { LeadFormValues } from "@/lib/validation/lead-form-schema";
 import { DEFAULT_ONLY_COUNTRIES, GEO_TIMEOUT_MS } from "@/lib/constants";
 
@@ -108,6 +108,12 @@ export function PhoneField({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Warm the phone-metadata chunk once the browser is idle so the first
+  // keystroke is already formatted.
+  useEffect(() => {
+    warmPhoneMetadata();
+  }, []);
+
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) setOpen(false);
@@ -131,11 +137,23 @@ export function PhoneField({
     return countries.filter((c) => c.name.toLowerCase().includes(q) || c.dialCode.includes(q));
   }, [countries, search]);
 
-  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
+  /**
+   * Formats `value` with libphonenumber's AsYouType. The metadata module is
+   * code-split, so if it has not arrived yet the raw input is kept as-is and
+   * re-formatted once the module resolves — the visitor never loses keystrokes
+   * and validation (which awaits the same module) is unaffected.
+   */
+  function format(value: string) {
+    const mod = peekPhoneMetadata();
+    if (!mod) {
+      phoneField.onChange(value);
+      loadPhoneMetadata().then(() => format(value));
+      return;
+    }
+
     const intl = value.trim().startsWith("+");
     if (intl) {
-      const formatter = new AsYouType();
+      const formatter = new mod.AsYouType();
       const formatted = formatter.input(value);
       const detected = formatter.getCountry();
       if (detected && (!resolvedOnlyCountries || resolvedOnlyCountries.includes(detected))) {
@@ -143,9 +161,13 @@ export function PhoneField({
       }
       phoneField.onChange(formatted);
     } else {
-      const formatter = new AsYouType((countryField.value || defaultCountry) as CountryCode);
+      const formatter = new mod.AsYouType((countryField.value || defaultCountry) as CountryCode);
       phoneField.onChange(formatter.input(value));
     }
+  }
+
+  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+    format(e.target.value);
   }
 
   function selectCountry(iso2: string) {
@@ -185,6 +207,7 @@ export function PhoneField({
         placeholder={placeholder}
         value={phoneValue ?? ""}
         onChange={handleInput}
+        onFocus={() => void loadPhoneMetadata()}
         onBlur={phoneOnBlur}
         aria-invalid={invalid}
         className={cn(

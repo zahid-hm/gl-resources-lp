@@ -253,8 +253,7 @@ function HeroSection() {
       className="relative min-h-screen lg:flex lg:items-center lg:justify-center bg-[#061512] pb-24 lg:pb-0"
     >
       <div className="absolute inset-0 opacity-40">
-        <img
-          src="/images/hero/social-hero.webp"
+        <img src="/images/hero/social-hero.webp" srcSet="/images/hero/social-hero-sm.webp 800w, /images/hero/social-hero.webp 1434w" sizes="100vw" width="1434" height="800"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
@@ -289,17 +288,12 @@ function HeroSection() {
             className="hidden lg:block h-7 w-auto mx-auto mb-6"
           />
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6"
-          >
+          <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-6">
             <Briefcase className="h-3.5 w-3.5 text-spark-300" />
             <span className="text-sm-body font-medium text-white">
               Social Media Management
             </span>
-          </motion.div>
+          </div>
 
           <h1
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white text-center leading-tight pb-3 sm:pb-4"
@@ -319,7 +313,7 @@ function HeroSection() {
                 muted={muted}
                 loop
                 playsInline
-                preload="auto"
+                preload="metadata"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 className="w-full h-full object-cover"
@@ -394,16 +388,11 @@ function HeroSection() {
         {/* Desktop only — the process row; on mobile it lives in the Process
             sheet instead. Just a normal block at the end of the centered
             content now, not pinned to the viewport edge. */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="hidden lg:block mt-2 pt-2 border-t border-white/10 px-6 sm:px-10 lg:px-16 pb-3 sm:pb-4"
-        >
+        <div className="gl-reveal gl-d3 hidden lg:block mt-2 pt-2 border-t border-white/10 px-6 sm:px-10 lg:px-16 pb-3 sm:pb-4">
           <div className="max-w-container mx-auto">
             <ProcessSteps variant="desktop" />
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <MobileAppTopBar />

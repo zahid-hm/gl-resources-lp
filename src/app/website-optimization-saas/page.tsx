@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowRight, Zap, BarChart3, TrendingUp, Quote, Code } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
 import { TrustedByMarquee } from "@/components/shared/TrustedByMarquee";
@@ -42,29 +41,29 @@ function HeroSection() {
   return (
     <section id="lead-form" className="relative overflow-hidden min-h-[500px] sm:min-h-[600px]">
       <div className="absolute inset-0">
-        <img src="/images/hero/website-optimization-saas-hero.webp" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
+        <img src="/images/hero/website-optimization-saas-hero.webp" srcSet="/images/hero/website-optimization-saas-hero-sm.webp 800w, /images/hero/website-optimization-saas-hero.webp 1440w" sizes="100vw" width="1440" height="786" alt="" className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" decoding="async" />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#061512]/95 via-[#061512]/70 to-transparent" />
 
       <div className="relative z-10 max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
           <div className="lg:col-span-3">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
+            <div className="gl-reveal gl-dur5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-8">
               <Code className="h-3.5 w-3.5 text-spark-300" />
               <span className="text-sm-body font-medium text-white">Website Optimization for B2B SaaS</span>
-            </motion.div>
+            </div>
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-h1 sm:text-display lg:text-display-sm text-white mb-6">
+            <h1 className="gl-reveal gl-d1 text-h1 sm:text-display lg:text-display-sm text-white mb-6">
               Turn More SaaS Visitors Into Trials And Demos
               <br />
               <span className="text-spark-400">You&apos;re Driving Traffic. You&apos;re Not Converting It.</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-body sm:text-sub text-gray-300 max-w-4xl mb-8">
+            <p className="gl-reveal gl-d2 text-body sm:text-sub text-gray-300 max-w-4xl mb-8">
               Get a dedicated CRO team that optimizes your landing pages, pricing page, and signup flow turning more of your existing traffic into trials, demos, and paying customers.
-            </motion.p>
+            </p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
+            <div className="gl-reveal gl-d3 flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
               {[
                 { icon: Zap, text: "30-Day Launch" },
                 { icon: BarChart3, text: "14 Deliverables Included" },
@@ -78,9 +77,9 @@ function HeroSection() {
                   </span>
                 );
               })}
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-4xl">
+            <div className="gl-reveal gl-d4 relative p-5 sm:p-6 rounded-xl bg-white/10 border border-white/20 backdrop-blur-sm max-w-4xl">
               <Quote className="absolute top-4 left-5 h-5 w-5 text-spark-300" />
               <p className="text-sm-body sm:text-body text-gray-200 italic mb-3 pl-8">
                 &ldquo;We went from page 5 on Google to position 2 for our main keyword in 8 weeks. Inbound leads tripled without spending an extra dollar on ads.&rdquo;
@@ -98,7 +97,7 @@ function HeroSection() {
                   <p className="text-xs text-gray-400">B2B SaaS Platform ($12M ARR)</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <HeroFormIntro>

@@ -232,8 +232,7 @@ function HeroSection() {
       className="relative min-h-screen lg:flex lg:items-center lg:justify-center bg-[#061512] pb-24 lg:pb-0"
     >
       <div className="absolute inset-0 opacity-40">
-        <img
-          src="/images/hero/video-hero.webp"
+        <img src="/images/hero/video-hero.webp" srcSet="/images/hero/video-hero-sm.webp 800w, /images/hero/video-hero.webp 1434w" sizes="100vw" width="1434" height="800"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
@@ -268,16 +267,11 @@ function HeroSection() {
             className="hidden lg:block h-7 w-auto mx-auto mt-6 sm:mt-8"
           />
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white text-center leading-tight pt-16 lg:pt-6 sm:pt-8 pb-3 sm:pb-4"
-          >
+          <h1 className="gl-reveal gl-dur5 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white text-center leading-tight pt-16 lg:pt-6 sm:pt-8 pb-3 sm:pb-4">
             Managed Video Editing for Teams
             <br />
             <span className="text-[#51B027]">That Need More Content Out the Door</span>
-          </motion.h1>
+          </h1>
         </div>
 
         {/* Video (both breakpoints) + form (desktop only, beside the video) */}
@@ -289,7 +283,7 @@ function HeroSection() {
                 muted={muted}
                 loop
                 playsInline
-                preload="auto"
+                preload="metadata"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 className="w-full h-full object-cover"
@@ -364,16 +358,11 @@ function HeroSection() {
         {/* Desktop only — the process row; on mobile it lives in the Process
             sheet instead. Just a normal block at the end of the centered
             content now, not pinned to the viewport edge. */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="hidden lg:block mt-2 pt-2 border-t border-white/10 px-6 sm:px-10 lg:px-16 pb-3 sm:pb-4"
-        >
+        <div className="gl-reveal gl-d3 hidden lg:block mt-2 pt-2 border-t border-white/10 px-6 sm:px-10 lg:px-16 pb-3 sm:pb-4">
           <div className="max-w-container mx-auto">
             <ProcessSteps variant="desktop" />
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <MobileAppTopBar />

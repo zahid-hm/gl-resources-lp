@@ -267,3 +267,108 @@
   font-weight: 400;
   line-height: 1.5;
 }
+
+/* ────────────────────────────────────────────────────────────────────────────
+   CSS-driven entrance animations.
+
+   These replace the framer-motion mount animations that used to drive the
+   above-the-fold hero content. Framer Motion renders its `initial` state as an
+   inline `opacity:0` in the SSR HTML, so the LCP element (the hero <h1>) stayed
+   invisible until the client bundle had downloaded, parsed and hydrated. Doing
+   the same animation in CSS means the browser paints — and Chrome records LCP —
+   on the very first frame, with no JavaScript involved.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+@keyframes gl-reveal-kf {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--gl-x, 0), var(--gl-y, 20px), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.gl-reveal {
+  animation: gl-reveal-kf var(--gl-dur, 0.6s) cubic-bezier(0.21, 0.47, 0.32, 0.98)
+    var(--gl-delay, 0s) both;
+}
+
+.gl-y30 { --gl-y: 30px; }
+.gl-y40 { --gl-y: 40px; }
+.gl-dur5 { --gl-dur: 0.5s; }
+.gl-d1 { --gl-delay: 0.1s; }
+.gl-d2 { --gl-delay: 0.2s; }
+.gl-d25 { --gl-delay: 0.25s; }
+.gl-d3 { --gl-delay: 0.3s; }
+.gl-d4 { --gl-delay: 0.4s; }
+
+/* Scroll-triggered reveal: the element holds its "before" state until an
+   IntersectionObserver adds .gl-in (see AnimatedSection). */
+.gl-scroll-reveal {
+  opacity: 0;
+  transform: translate3d(var(--gl-x, 0), var(--gl-y, 40px), 0);
+  will-change: opacity, transform;
+}
+.gl-scroll-reveal.gl-in {
+  animation: gl-reveal-kf var(--gl-dur, 0.6s) cubic-bezier(0.21, 0.47, 0.32, 0.98)
+    var(--gl-delay, 0s) both;
+  will-change: auto;
+}
+
+/* Staggered children: StaggerItem is always a direct child of StaggerContainer,
+   so the per-item delay is pure CSS rather than a motion variant per node. */
+.gl-stagger > .gl-stagger-item {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+}
+.gl-stagger.gl-in > .gl-stagger-item {
+  animation: gl-reveal-kf 0.5s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+}
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(1) { animation-delay: calc(var(--gl-stagger, 0.1s) * 0); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(2) { animation-delay: calc(var(--gl-stagger, 0.1s) * 1); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(3) { animation-delay: calc(var(--gl-stagger, 0.1s) * 2); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(4) { animation-delay: calc(var(--gl-stagger, 0.1s) * 3); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(5) { animation-delay: calc(var(--gl-stagger, 0.1s) * 4); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(6) { animation-delay: calc(var(--gl-stagger, 0.1s) * 5); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(7) { animation-delay: calc(var(--gl-stagger, 0.1s) * 6); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(8) { animation-delay: calc(var(--gl-stagger, 0.1s) * 7); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(9) { animation-delay: calc(var(--gl-stagger, 0.1s) * 8); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(10) { animation-delay: calc(var(--gl-stagger, 0.1s) * 9); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(11) { animation-delay: calc(var(--gl-stagger, 0.1s) * 10); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(12) { animation-delay: calc(var(--gl-stagger, 0.1s) * 11); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(13) { animation-delay: calc(var(--gl-stagger, 0.1s) * 12); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(14) { animation-delay: calc(var(--gl-stagger, 0.1s) * 13); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(15) { animation-delay: calc(var(--gl-stagger, 0.1s) * 14); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(16) { animation-delay: calc(var(--gl-stagger, 0.1s) * 15); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(17) { animation-delay: calc(var(--gl-stagger, 0.1s) * 16); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(18) { animation-delay: calc(var(--gl-stagger, 0.1s) * 17); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(19) { animation-delay: calc(var(--gl-stagger, 0.1s) * 18); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(20) { animation-delay: calc(var(--gl-stagger, 0.1s) * 19); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(21) { animation-delay: calc(var(--gl-stagger, 0.1s) * 20); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(22) { animation-delay: calc(var(--gl-stagger, 0.1s) * 21); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(23) { animation-delay: calc(var(--gl-stagger, 0.1s) * 22); }
+.gl-stagger.gl-in > .gl-stagger-item:nth-child(24) { animation-delay: calc(var(--gl-stagger, 0.1s) * 23); }
+
+
+.gl-float {
+  animation: gl-float-kf var(--gl-float-dur, 4s) ease-in-out infinite;
+}
+@keyframes gl-float-kf {
+  0%, 100% { transform: translate3d(0, calc(var(--gl-amp, 8px) * -1), 0); }
+  50% { transform: translate3d(0, var(--gl-amp, 8px), 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gl-reveal,
+  .gl-scroll-reveal,
+  .gl-scroll-reveal.gl-in,
+  .gl-stagger.gl-in > .gl-stagger-item,
+  .gl-float {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+

@@ -70,18 +70,13 @@ function LeftColumn() {
             </span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-h2 sm:text-h1 lg:text-h3 text-white mb-5 leading-tight"
-          >
+          <h1 className="gl-reveal gl-d1 text-h2 sm:text-h1 lg:text-h3 text-white mb-5 leading-tight">
             Product And Service Videos
             <br />
             <span className="text-[#51B027]">
               Without An In-House Team
             </span>
-          </motion.h1>
+          </h1>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -134,21 +129,11 @@ function LeftColumn() {
             </div>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-sm-body text-gray-300 mb-5"
-          >
+          <p className="gl-reveal gl-d2 text-sm-body text-gray-300 mb-5">
             Get a dedicated video team that creates product walkthroughs, service explainers, and client testimonial videos so prospects understand your value before the first call.
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-2 mb-5"
-          >
+          <div className="gl-reveal gl-d3 flex flex-wrap items-center justify-center gap-2 mb-5">
             {[
               { icon: Zap, text: "Launch in 14 Days" },
               { icon: CalendarDays, text: "48-Hour Turnaround" },
@@ -165,7 +150,7 @@ function LeftColumn() {
                 </span>
               );
             })}
-          </motion.div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
