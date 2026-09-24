@@ -54,7 +54,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: ".env,gl-resources-lp.tar.gz"
+          source: "docker-compose.yml,.env,gl-resources-lp.tar.gz"
           target: ${{ github.event.repository.name }}
 
       - name: Deploy Containers on VPS
