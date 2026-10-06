@@ -10,7 +10,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "optimize-images": "node scripts/optimize-images.mjs"
+    "optimize-images": "node scripts/optimize-images.mjs",
+    "html:generate": "node scripts/html/generate.mjs",
+    "html:check": "node scripts/html/generate.mjs --check",
+    "html:serve": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/html/serve.mjs",
+    "html:smoke": "node scripts/html/smoke.mjs",
+    "html:unpublished": "node scripts/html/unpublished.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

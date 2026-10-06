@@ -1,0 +1,15 @@
+# stage-resources.getlevrg.com — the generated-html/ server (Dockerfile.html).
+# Deployed by .github/workflows/stage-html.yml; runs `npm run html:serve`.
+# Host port 3006 sits next to the Next app's 3005 (same binding style as
+# docker-compose.dev.yml); the host's reverse proxy terminates TLS for
+# stage-resources.getlevrg.com and forwards here.
+services:
+  web:
+    image: gl-resources-lp-stage:latest
+    restart: unless-stopped
+    init: true
+    ports:
+      - "3006:3000"
+    environment:
+      - IPWHOIS_ENDPOINT=${IPWHOIS_ENDPOINT}
+      - DOH_ENDPOINT=${DOH_ENDPOINT}

@@ -1,11 +1,6 @@
 import type { NextConfig } from "next";
-
-const SECURITY_HEADERS = [
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "X-Frame-Options", value: "SAMEORIGIN" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-];
+// Shared with the stage server for generated-html/ (scripts/html/serve.mjs).
+import { SECURITY_HEADERS, IMMUTABLE_CACHE } from "./http-headers.mjs";
 
 // Content-hashed bundles under /_next/static already get an immutable policy
 // from Next. Everything in /public is served with a short default, which makes
@@ -14,16 +9,30 @@ const SECURITY_HEADERS = [
 // a long immutable TTL is safe; change the filename to bust the cache.
 const IMMUTABLE = {
   key: "Cache-Control",
-  value: "public, max-age=31536000, immutable",
+  value: IMMUTABLE_CACHE,
 };
 
+// `npm run html:generate` builds with HTML_BUILD=1. That build only exists to
+// be post-processed into self-contained files under generated-html/, so it gets
+// its own distDir (a regular `.next` build is never clobbered) and inlines CSS
+// natively — Next then also swaps the stylesheet reference in the RSC payload,
+// which hydration would otherwise re-request from /_next/static.
+const HTML_BUILD = process.env.HTML_BUILD === "1";
+
 const nextConfig: NextConfig = {
-  output: "standalone",
+  output: HTML_BUILD ? undefined : "standalone",
+  distDir: HTML_BUILD ? ".next-html" : ".next",
+  // The build ID is embedded in every page. A random one would make each
+  // regeneration byte-different even when nothing changed, and CI decides what
+  // to publish by comparing page hashes. These pages never navigate client-side
+  // (they full-page-load), so version skew detection loses nothing.
+  ...(HTML_BUILD && { generateBuildId: () => "generated-html" }),
   poweredByHeader: false,
   compress: true,
   productionBrowserSourceMaps: false,
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
+    inlineCss: HTML_BUILD,
   },
   async headers() {
     return [

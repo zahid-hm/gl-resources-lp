@@ -1,0 +1,13 @@
+# Build context for Dockerfile.html (BuildKit reads <Dockerfile>.dockerignore
+# in place of .dockerignore). Allowlist: only what the stage server needs.
+*
+!package.json
+!package-lock.json
+!http-headers.mjs
+!src/lib/constants.ts
+!scripts/html/serve.mjs
+!scripts/html/precompress.mjs
+!public
+!generated-html
+generated-html/*.br
+generated-html/*.gz

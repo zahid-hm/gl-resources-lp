@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+/.next-html/
 /out/
 
 # production
@@ -39,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# html:generate output is committed; precompressed copies are made in the stage image
+/generated-html/*.br
+/generated-html/*.gz

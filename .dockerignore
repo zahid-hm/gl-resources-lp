@@ -9,3 +9,6 @@ npm-debug.log*
 Dockerfile
 .dockerignore
 docker-compose.yml
+.next-html
+# Only Dockerfile.html needs the generated pages (see Dockerfile.html.dockerignore)
+generated-html

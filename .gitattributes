@@ -1,0 +1,3 @@
+# Output of `npm run html:generate`. Committed, but never hand-edited or
+# line-ending converted (CI compares byte hashes), and collapsed in diffs.
+generated-html/** -text -diff linguist-generated=true

@@ -1,0 +1,37 @@
+# Stage image for generated-html/ — the self-contained pages, their public/
+# assets and scripts/html/serve.mjs. No Next.js build or runtime inside: the
+# pages were built by `npm run html:generate` and committed.
+# Context allowlist: Dockerfile.html.dockerignore.
+
+FROM node:22-alpine
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+# The server's only dependency, at the version the lockfile pins. Installed
+# before package.json is copied in: next to it, npm would install the whole
+# app's dependency tree, not just this package.
+COPY package-lock.json /tmp/package-lock.json
+RUN npm install --no-save --no-package-lock --ignore-scripts --no-audit --no-fund \
+      "disposable-email-domains@$(node -p "require('/tmp/package-lock.json').packages['node_modules/disposable-email-domains'].version")" \
+    && rm /tmp/package-lock.json && npm cache clean --force
+
+# package.json only for the `npm run html:serve` script.
+COPY package.json http-headers.mjs ./
+COPY src/lib/constants.ts ./src/lib/constants.ts
+COPY scripts/html/serve.mjs scripts/html/precompress.mjs ./scripts/html/
+COPY public ./public
+COPY generated-html ./generated-html
+
+# Brotli at quality 11 costs ~2 s per page, so pay it once here, not on every start.
+RUN UV_THREADPOOL_SIZE=8 node scripts/html/precompress.mjs
+
+ARG RELEASE=dev
+ENV RELEASE=$RELEASE PORT=3000 NOINDEX=1
+
+USER node
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
+  CMD wget -qO- http://127.0.0.1:3000/healthz >/dev/null || exit 1
+
+CMD ["npm", "run", "html:serve"]

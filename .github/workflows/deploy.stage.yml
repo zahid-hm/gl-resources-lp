@@ -1,0 +1,174 @@
+name: Deploy HTML files in stage
+
+# On every push to `stage`: find the generated-html/ pages that
+# stage-resources.getlevrg.com is not serving yet, run the landing-page checks
+# on them, containerize generated-html/ and deploy it. Nothing to publish = no
+# deploy. `main` and its Next.js deploy (deploy.yml) are not involved.
+#
+# Secrets: VPS_HOST, VPS_USERNAME, VPS_SSH_KEY (shared with deploy.yml),
+# LANDING_PAGES_TOKEN (read access to Get-Levrg-Inc/getlevrg-landing-pages),
+# optional IPWHOIS_ENDPOINT, DOH_ENDPOINT, HUBSPOT_ACCESS_TOKEN.
+
+on:
+  push:
+    branches: [stage]
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Deploy even if every page is already published
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stage-html
+  cancel-in-progress: false # never cut a deploy off halfway
+
+env:
+  STAGE_URL: https://stage-resources.getlevrg.com
+  IMAGE: gl-resources-lp-stage
+  APP_DIR: gl-resources-lp-stage
+
+jobs:
+  detect:
+    name: Find unpublished pages
+    runs-on: ubuntu-latest
+    outputs:
+      count: ${{ steps.diff.outputs.count }}
+      slugs: ${{ steps.diff.outputs.slugs }}
+      files: ${{ steps.diff.outputs.files }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Every src/app/<slug>/page.tsx must have been converted and committed.
+      - name: Every page has a generated .html
+        run: node scripts/html/generate.mjs --check
+
+      - name: Diff against what stage is serving
+        id: diff
+        run: node scripts/html/unpublished.mjs --url="$STAGE_URL" --github-output
+
+  test:
+    name: Test unpublished pages
+    needs: detect
+    if: needs.detect.outputs.count != '0' || inputs.force
+    runs-on: ubuntu-latest
+    env:
+      FILES: ${{ needs.detect.outputs.files }}
+      SLUGS: ${{ needs.detect.outputs.slugs }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # The same validate_pages.py that gates getlevrg-landing-pages, imported
+      # from its own repo so the rules never drift (scripts/html/validate_html.py).
+      - name: Check out getlevrg-landing-pages validator
+        uses: actions/checkout@v4
+        with:
+          repository: Get-Levrg-Inc/getlevrg-landing-pages
+          token: ${{ secrets.LANDING_PAGES_TOKEN }}
+          path: .landing-pages
+          sparse-checkout: |
+            hubspot-cms/scripts
+            hubspot-cms/requirements.txt
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: .landing-pages/hubspot-cms/requirements.txt
+      - run: pip install -r .landing-pages/hubspot-cms/requirements.txt
+
+      - name: Validate pages (landing-pages rules)
+        env:
+          HUBSPOT_ACCESS_TOKEN: ${{ secrets.HUBSPOT_ACCESS_TOKEN }}
+        # With FILES empty (a forced run) this validates every page.
+        run: python scripts/html/validate_html.py --landing-pages .landing-pages $FILES
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --omit=dev --ignore-scripts --no-audit --no-fund
+
+      - name: Hydration smoke test (headless Chrome)
+        run: npm run html:smoke -- $SLUGS
+
+  deploy:
+    name: Containerize and deploy
+    needs: [detect, test]
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
+      url: ${{ env.STAGE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        run: |
+          docker buildx build --load \
+            --build-arg RELEASE=${{ github.sha }} \
+            -f Dockerfile.html \
+            -t $IMAGE:latest \
+            .
+          docker save $IMAGE:latest | gzip > $IMAGE.tar.gz
+          du -sh $IMAGE.tar.gz
+
+      - name: Prepare compose and env
+        run: |
+          cp docker-compose.stage.yml docker-compose.yml
+          {
+            echo "IPWHOIS_ENDPOINT=${{ secrets.IPWHOIS_ENDPOINT }}"
+            echo "DOH_ENDPOINT=${{ secrets.DOH_ENDPOINT }}"
+          } > .env
+
+      - name: Transfer to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "docker-compose.yml,.env,${{ env.IMAGE }}.tar.gz"
+          target: ${{ env.APP_DIR }}
+
+      - name: Start on VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          envs: IMAGE,APP_DIR
+          script: |
+            set -e
+            cd ~/$APP_DIR
+            # Keep the running image as :previous for a one-command rollback:
+            #   docker tag $IMAGE:previous $IMAGE:latest && docker compose up -d --force-recreate
+            docker image inspect $IMAGE:latest >/dev/null 2>&1 && docker tag $IMAGE:latest $IMAGE:previous || true
+            docker load -i $IMAGE.tar.gz
+            docker compose up -d --force-recreate --remove-orphans
+            rm -f $IMAGE.tar.gz
+            docker image prune -f
+
+      # Done means stage is serving exactly this commit's pages.
+      - name: Verify stage serves this release
+        run: |
+          for i in $(seq 1 30); do
+            release=$(curl -fsS "$STAGE_URL/__manifest.json" 2>/dev/null | jq -r .release || true)
+            if [ "$release" = "${{ github.sha }}" ]; then break; fi
+            sleep 5
+          done
+          if [ "$release" != "${{ github.sha }}" ]; then
+            echo "::error::$STAGE_URL is serving release '$release', expected ${{ github.sha }}"
+            exit 1
+          fi
+          node scripts/html/unpublished.mjs --url="$STAGE_URL" --expect-none
+          {
+            echo "### Published to $STAGE_URL"
+            for slug in ${{ needs.detect.outputs.slugs }}; do echo "- $STAGE_URL/$slug"; done
+          } >> "$GITHUB_STEP_SUMMARY"
