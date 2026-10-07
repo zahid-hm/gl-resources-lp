@@ -15,7 +15,7 @@ by a small Node server, not by Next.js. The Next app on `main` (deploy.yml) is u
 | `npm run html:serve` | The stage server, which is what the container runs. `PORT=3000` by default. |
 | `npm run html:smoke [-- slug …]` | Loads pages in headless Chrome: hydration, zero `/_next/` requests, no errors, lead-form validation. |
 | `npm run html:unpublished -- --url=…` | Lists pages whose bytes differ from what a server is serving. |
-| `python scripts/html/validate_html.py` | Runs `getlevrg-landing-pages`' `validate_pages.py` on the pages (needs that repo checked out next to this one, or `--landing-pages DIR`). |
+| `npm run html:validate [-- slug …]` | Landing-page rules (ported from `getlevrg-landing-pages`' `validate_pages.py`): form GUID, lead fields, ns array, widget contract, HTML structure, UTF-8, CDN host. |
 
 `html:generate` needs `NEXT_PUBLIC_SITE_URL` (env or `.env`), which is baked into canonical and OG URLs.
 Commit `generated-html/` with the source change. Never hand-edit a generated file; edit the `.tsx` and regenerate.
@@ -49,10 +49,10 @@ The form calls `/api/check-email` and `/api/geolocate`; `serve.mjs` implements b
 1. **detect**: `html:check`, then `html:unpublished` diffs sha256 of each page against
    `https://stage-resources.getlevrg.com/__manifest.json`. If nothing is new or changed, the run stops.
 2. **test**, on the unpublished pages only:
-   - `validate_html.py` with `getlevrg-landing-pages`' validator: HTML well-formedness, UTF-8/mojibake,
-     raw HubSpot CDN host, and the lead-form/GUID/ns-array/widget rules where they apply. Two rules
-     are about HubSpot page identity and are skipped: `filename_pattern` (stems here are slugs) and
-     `id_mapping` (no HubSpot ID, which also means the validator can never create a HubSpot draft).
+   - `html:validate`, the landing-page rules ported from `getlevrg-landing-pages`: HTML well-formedness,
+     UTF-8/mojibake, raw HubSpot CDN host, and the lead-form/GUID/ns-array/widget rules where they apply.
+     The two HubSpot page-identity rules are not ported: `filename_pattern` (stems here are slugs) and
+     `id_mapping` (no HubSpot ID; it is also the rule that could create a HubSpot draft).
    - `html:smoke` in headless Chrome.
 3. **deploy**: `Dockerfile.html` → image `gl-resources-lp-stage` (server + `public/` + pages,
    precompressed) → scp to the VPS → `docker compose up` (`docker-compose.stage.yml`, host port 3006).
@@ -66,7 +66,6 @@ Manual run: Actions → Stage HTML → Run workflow (tick **force** to redeploy 
 ### One-time setup
 
 - **Secrets**: `VPS_HOST`, `VPS_USERNAME`, `VPS_SSH_KEY` (already used by deploy.yml);
-  `LANDING_PAGES_TOKEN`, a fine-grained token with *Contents: read* on `Get-Levrg-Inc/getlevrg-landing-pages`;
   optional `IPWHOIS_ENDPOINT`, `DOH_ENDPOINT`, and `HUBSPOT_ACCESS_TOKEN` (enables the validator's API-backed checks).
 - **Branch**: create `stage`.
 - **DNS + TLS**: point `stage-resources.getlevrg.com` at the VPS and proxy it to `127.0.0.1:3006`

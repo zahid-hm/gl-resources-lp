@@ -15,7 +15,8 @@
     "html:check": "node scripts/html/generate.mjs --check",
     "html:serve": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/html/serve.mjs",
     "html:smoke": "node scripts/html/smoke.mjs",
-    "html:unpublished": "node scripts/html/unpublished.mjs"
+    "html:unpublished": "node scripts/html/unpublished.mjs",
+    "html:validate": "node scripts/html/validate.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
