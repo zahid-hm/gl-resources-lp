@@ -8,13 +8,12 @@
 
 ## Services
 
-- [Video Editing](https://gl-vite-lp.vercel.app/video): Managed video editing teams for agencies, marketing teams, and B2B companies — short-form, long-form, motion graphics, and white-label editing.
-- [Social Media Management](https://gl-vite-lp.vercel.app/social): Dedicated social media production and management teams for professional services and B2B companies.
-- [CRM Optimization](https://gl-vite-lp.vercel.app/crm): HubSpot/CRM cleanup, data hygiene, and revenue-operations support.
-- [Website Optimization](https://gl-vite-lp.vercel.app/website-optimization): Conversion and performance optimization for existing marketing websites.
-- [LinkedIn & Outbound](https://gl-vite-lp.vercel.app/linkedin-outbound): LinkedIn-led outbound programs for B2B pipeline generation.
+- [Video Editing](https://getlevrg.com/video): Managed video editing teams for agencies, marketing teams, and B2B companies — short-form, long-form, motion graphics, and white-label editing.
+- [Social Media Management](https://getlevrg.com/social): Dedicated social media production and management teams for professional services and B2B companies.
+- [CRM Optimization](https://getlevrg.com/crm): HubSpot/CRM cleanup, data hygiene, and revenue-operations support.
+- [Website Optimization](https://getlevrg.com/website-optimization): Conversion and performance optimization for existing marketing websites.
+- [LinkedIn & Outbound](https://getlevrg.com/linkedin-outbound): LinkedIn-led outbound programs for B2B pipeline generation.
 
 ## Notes
 
-- This is a client-rendered single-page app; each link above is a distinct landing
-  page reached via its own URL path, served client-side via React Router.
+- Each link above is a distinct, server-rendered landing page at its own URL path.

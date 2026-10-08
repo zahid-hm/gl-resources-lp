@@ -99,6 +99,8 @@ function HeroSection() {
               </p>
               <div className="flex items-center gap-3 pl-8">
                 <img
+                  width={36}
+                  height={36}
                   src="/images/client/marche-kaanehe.webp"
                   alt="Senior Broker"
                   loading="lazy"

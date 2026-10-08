@@ -103,6 +103,8 @@ function TestimonialCard({ index, className = "" }: { index: number; className?:
           </p>
           <div className="flex items-center gap-2.5">
             <img
+              width={28}
+              height={28}
               src={t.image}
               alt={t.name}
               loading="lazy"

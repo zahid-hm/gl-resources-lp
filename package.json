@@ -11,6 +11,7 @@
     "start": "next start",
     "lint": "eslint",
     "optimize-images": "node scripts/optimize-images.mjs",
+    "og-images": "node scripts/og-images.mjs",
     "html:generate": "node scripts/html/generate.mjs",
     "html:check": "node scripts/html/generate.mjs --check",
     "html:serve": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/html/serve.mjs",

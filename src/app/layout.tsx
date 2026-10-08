@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
   icons: {
     icon: "/favicon.webp",
+    // iOS ignores WebP icons for home-screen bookmarks. `npm run og-images` writes it.
+    apple: "/apple-touch-icon.png",
   },
 };
 

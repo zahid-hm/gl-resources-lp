@@ -169,9 +169,9 @@ function CalendarAndVideoSection() {
                     <CalendarDays className="h-4 w-4 text-spark-600" />
                   </div>
                   <div>
-                    <h3 className="text-sub font-bold text-gray-900">
+                    <h2 className="text-sub font-bold text-gray-900">
                       Book a Discovery Call
-                    </h3>
+                    </h2>
                     <p className="text-sm-body text-gray-500">
                       Pick a time that works for you
                     </p>
@@ -199,9 +199,9 @@ function CalendarAndVideoSection() {
             <VideoEmbed />
 
             <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 shadow-sm">
-              <h3 className="text-sub font-bold text-gray-900 mb-3">
+              <h2 className="text-sub font-bold text-gray-900 mb-3">
                 What Happens on the Call
-              </h3>
+              </h2>
               <p className="text-sm-body text-gray-600 mb-5 leading-relaxed">
                 We&apos;ll spend a few minutes learning about your business, understanding your objectives, and exploring the best way to support your growth.
               </p>
@@ -324,6 +324,8 @@ function TestimonialsSection() {
                 <div className="pt-5 border-t border-gray-200">
                   <div className="flex items-center gap-3">
                     <img
+                      width={40}
+                      height={40}
                       src={t.image}
                       alt={t.name}
                       loading="lazy"

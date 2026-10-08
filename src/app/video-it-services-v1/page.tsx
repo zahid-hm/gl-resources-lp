@@ -131,6 +131,8 @@ function TestimonialCard({ index, className = "" }: { index: number; className?:
           </p>
           <div className="flex items-center gap-2.5">
             <img
+              width={28}
+              height={28}
               src={t.image}
               alt={t.name}
               loading="lazy"
@@ -429,6 +431,7 @@ export default function Page() {
         ogTitle: "Video Editing for IT Service Providers | Get Levrg",
         ogDescription: "Product and service videos for IT companies without an in-house team.",
         ogImage: "/images/hero/video-it-services-hero.webp",
+        canonicalPath: "/video-it-services",
       }}
     >
       <HeroSection />

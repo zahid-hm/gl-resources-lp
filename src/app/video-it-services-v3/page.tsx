@@ -160,6 +160,8 @@ function LeftColumn() {
           >
             <div className="flex items-center justify-center gap-2.5 mb-3">
               <img
+                width={24}
+                height={24}
                 src="/images/client/james-mcgrath.webp"
                 alt="James McGrath"
                 loading="lazy"
@@ -212,6 +214,8 @@ function LeftColumnTrustMarquee() {
               className="flex-shrink-0 mx-2 flex items-center justify-center h-11 w-[76px] rounded-lg bg-white/95 px-2.5 py-2"
             >
               <img
+                width={140}
+                height={56}
                 src={logo.src}
                 alt={`${logo.alt} company logo`}
                 loading="lazy"
@@ -352,6 +356,7 @@ export default function Page() {
         ogTitle: "Video Editing for IT Service Providers | Get Levrg",
         ogDescription: "Product and service videos for IT companies without an in-house team.",
         ogImage: "/images/hero/video-it-services-hero.webp",
+        canonicalPath: "/video-it-services",
       }}
     >
       <div id="lead-form" className="lg:grid lg:grid-cols-[25%_minmax(0,75%)]">
