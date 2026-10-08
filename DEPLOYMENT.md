@@ -1,5 +1,10 @@
 # Deployment
 
+> **Stage:** the `stage` branch deploys something different: self-contained HTML pages from
+> `generated-html/`, served by a small Node server (not `next start`) at
+> stage-resources.getlevrg.com via `.github/workflows/stage-html.yml`. See
+> [`GENERATED-HTML.md`](GENERATED-HTML.md).
+
 `gl-resources-lp` deploys as a single Docker container to your EC2 instance via
 `.github/workflows/deploy.yml`. On every push to `main`:
 

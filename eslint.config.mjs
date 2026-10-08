@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // npm run html:generate: its build output and the generated pages.
+    ".next-html/**",
+    "generated-html/**",
   ]),
 ]);
 

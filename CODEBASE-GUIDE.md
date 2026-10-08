@@ -393,6 +393,9 @@ Idempotent (skips already-optimal files). Edit `HERO_WIDTH` / `HERO_QUALITY` / `
 
 **Workflow:** drop a full-size hero into `public/images/hero/`, run the script, commit both the compressed original and the generated `-sm` file.
 
+### `scripts/html/` — generated HTML for stage
+`npm run html:generate` turns each `src/app/<slug>/page.tsx` into a self-contained `generated-html/<slug>.html` (all JS/CSS inline, still hydrates), served on stage-resources.getlevrg.com by `npm run html:serve`. `generate.mjs` (CLI) · `inline.mjs` (the conversion) · `serve.mjs` (stage server) · `smoke.mjs` (headless-Chrome check) · `unpublished.mjs` (diff vs. stage) · `validate.mjs` (landing-page rules) · `precompress.mjs` (image build). Full reference: [`GENERATED-HTML.md`](GENERATED-HTML.md).
+
 ---
 
 ## 12. Recipe: add a new page
@@ -499,6 +502,7 @@ npm run dev        # visit http://localhost:3000/<folder-name>
 - [ ] `TestimonialsSection industry="…"` set, if used
 - [ ] Added to `public/sitemap.xml` (or `meta.noindex: true` set)
 - [ ] `npm run build` passes
+- [ ] `npm run html:generate` run and `generated-html/<folder-name>.html` committed (CI on `stage` fails without it)
 
 ---
 
