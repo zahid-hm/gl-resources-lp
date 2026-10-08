@@ -118,6 +118,8 @@ function HeroSection() {
               </p>
               <div className="flex items-center gap-3">
                 <img
+                  width={36}
+                  height={36}
                   src="/images/client/miles-kaiburn.webp"
                   alt="Miles Kaiburn"
                   loading="lazy"

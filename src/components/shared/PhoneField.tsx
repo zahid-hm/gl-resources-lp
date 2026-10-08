@@ -190,7 +190,7 @@ export function PhoneField({
       >
         {selected && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={`/${selected.flag}`} alt="" aria-hidden className="w-5 h-4 object-cover rounded-sm" />
+          <img width={20} height={16} src={`/${selected.flag}`} alt="" aria-hidden className="w-5 h-4 object-cover rounded-sm" />
         )}
         <span className="text-sm-body text-gray-700">{selected?.dialCode ?? ""}</span>
         <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
@@ -241,7 +241,7 @@ export function PhoneField({
                   className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm hover:bg-spark-50"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`/${c.flag}`} alt="" aria-hidden className="w-5 h-4 object-cover rounded-sm" />
+                  <img width={20} height={16} src={`/${c.flag}`} alt="" aria-hidden className="w-5 h-4 object-cover rounded-sm" />
                   <span className="flex-1">{c.name}</span>
                   <span className="text-gray-400">{c.dialCode}</span>
                 </button>

@@ -227,6 +227,8 @@ function HeroSection({ onOpenForm }: { onOpenForm: () => void }) {
               </p>
               <div className="flex items-center justify-center gap-3">
                 <img
+                  width={36}
+                  height={36}
                   src={testimonials[testimonialIndex].image}
                   alt={testimonials[testimonialIndex].name}
                   loading="lazy"
@@ -512,6 +514,8 @@ function FormSection() {
     <section id="get-started" className="hidden lg:block relative overflow-hidden py-16 sm:py-24 bg-[#061512] scroll-mt-28">
       <div className="absolute inset-0">
         <img
+          width={1434}
+          height={800}
           src="/images/hero/video-hero.webp"
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
@@ -592,6 +596,7 @@ export default function Page() {
         ogTitle: "Managed Video Editing Services | Get Levrg",
         ogDescription: "A dedicated video editing team that handles the editors, project management, quality checks, and turnaround, so your team publishes more.",
         ogImage: "/images/hero/video-hero.webp",
+        canonicalPath: "/video",
       }}
     >
       <HeroSection onOpenForm={openForm} />

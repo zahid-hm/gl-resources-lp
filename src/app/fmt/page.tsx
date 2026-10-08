@@ -275,6 +275,8 @@ function HeroSection() {
               </p>
               <div className="flex items-center gap-3">
                 <img
+                  width={36}
+                  height={36}
                   src="/images/client/thomas-buchanan.webp"
                   alt="Thomas Buchanan"
                   loading="lazy"
@@ -1143,6 +1145,8 @@ function TestimonialsSection() {
                 <div className="pt-5 border-t border-gray-200">
                   <div className="flex items-center gap-3">
                     <img
+                      width={40}
+                      height={40}
                       src={t.image}
                       alt={t.name}
                       loading="lazy"

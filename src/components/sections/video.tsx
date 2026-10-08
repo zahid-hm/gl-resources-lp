@@ -454,6 +454,8 @@ function HeroSection() {
               </p>
               <div className="flex items-center gap-3">
                 <img
+                  width={36}
+                  height={36}
                   src="/images/client/sara-murray.webp"
                   alt="Sara Murray"
                   loading="lazy"
@@ -885,6 +887,8 @@ export function SEOSection() {
                   className={`relative rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 group ${img.span}`}
                 >
                   <img
+                    width={1200}
+                    height={675}
                     src={img.src}
                     srcSet={workSampleSrcSet(img.src)}
                     sizes={WORK_SAMPLE_SIZES}
@@ -982,6 +986,8 @@ function GeneralSEOSection() {
                   className={`relative rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 group ${img.span}`}
                 >
                   <img
+                    width={1200}
+                    height={675}
                     src={img.src}
                     srcSet={workSampleSrcSet(img.src)}
                     sizes={WORK_SAMPLE_SIZES}
@@ -1590,6 +1596,8 @@ export function TestimonialsSection({ industry }: { industry?: string } = {}) {
                 <div className="pt-5 border-t border-gray-100">
                   <div className="flex items-center gap-3">
                     <img
+                      width={40}
+                      height={40}
                       src={t.image}
                       alt={t.name}
                       loading="lazy"
@@ -1741,6 +1749,8 @@ function GeneralTestimonialsSection() {
                 <div className="pt-5 border-t border-gray-100">
                   <div className="flex items-center gap-3">
                     <img
+                      width={40}
+                      height={40}
                       src={t.image}
                       alt={t.name}
                       loading="lazy"

@@ -273,6 +273,8 @@ function HeroSection() {
               </p>
               <div className="flex items-center gap-3 pl-8">
                 <img
+                  width={36}
+                  height={36}
                   src="/images/client/james-mcgrath.webp"
                   alt="James McGrath"
                   loading="lazy"
@@ -655,7 +657,7 @@ export function SEOSection() {
             <div className="grid grid-cols-2 grid-rows-3 gap-3 sm:gap-4 h-[480px] sm:h-[560px]">
               {bentoImages.map((img, i) => (
                 <div key={i} className={`relative rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 group ${img.span}`}>
-                  <img src={img.src} srcSet={workSampleSrcSet(img.src)} sizes={WORK_SAMPLE_SIZES} alt={img.alt} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img width={1200} height={675} src={img.src} srcSet={workSampleSrcSet(img.src)} sizes={WORK_SAMPLE_SIZES} alt={img.alt} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                 </div>
               ))}
@@ -740,7 +742,7 @@ function GeneralSEOSection() {
             <div className="grid grid-cols-2 grid-rows-3 gap-3 sm:gap-4 h-[480px] sm:h-[560px]">
               {bentoImages.map((img, i) => (
                 <div key={i} className={`relative rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 group ${img.span}`}>
-                  <img src={img.src} srcSet={workSampleSrcSet(img.src)} sizes={WORK_SAMPLE_SIZES} alt={img.alt} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img width={1200} height={675} src={img.src} srcSet={workSampleSrcSet(img.src)} sizes={WORK_SAMPLE_SIZES} alt={img.alt} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                 </div>
               ))}
@@ -1625,6 +1627,8 @@ export function TestimonialsSection({ industry }: { industry?: string } = {}) {
                 <div className="pt-5 border-t border-gray-100">
                   <div className="flex items-center gap-3">
                     <img
+                      width={40}
+                      height={40}
                       src={t.image}
                       alt={t.name}
                       loading="lazy"
@@ -1747,6 +1751,8 @@ function GeneralTestimonialsSection() {
                 <div className="pt-5 border-t border-gray-100">
                   <div className="flex items-center gap-3">
                     <img
+                      width={40}
+                      height={40}
                       src={t.image}
                       alt={t.name}
                       loading="lazy"

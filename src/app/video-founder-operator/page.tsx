@@ -119,6 +119,8 @@ function HeroSection() {
               </p>
               <div className="flex items-center gap-3">
                 <img
+                  width={36}
+                  height={36}
                   src="/images/client/joseph-p-meyer.webp"
                   alt="Joseph P. Meyer"
                   loading="lazy"
@@ -389,6 +391,8 @@ function SEOSection() {
                   className={`relative rounded-2xl overflow-hidden border border-gray-100 bg-gray-50 group ${img.span}`}
                 >
                   <img
+                    width={1200}
+                    height={675}
                     src={img.src}
                     srcSet={workSampleSrcSet(img.src)}
                     sizes={WORK_SAMPLE_SIZES}
@@ -651,6 +655,8 @@ function TestimonialsSection() {
                 <div className="pt-5 border-t border-gray-100">
                   <div className="flex items-center gap-3">
                     <img
+                      width={40}
+                      height={40}
                       src={t.image}
                       alt={t.name}
                       loading="lazy"
