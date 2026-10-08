@@ -144,7 +144,7 @@ export function inlinePage(html, { distDir, publicDir, inlineImageMaxBytes }) {
   const ordered = [...all.filter((rel) => !isRuntime(rel)), ...all.filter(isRuntime)];
   const scripts = ordered
     .map((rel) => {
-      const code = registerInline(transformAssets(chunks.get(rel)), rel);
+      const code = registerInline(stripBaselinePolyfills(transformAssets(chunks.get(rel))), rel);
       const id = entryIds.get(rel);
       // Next's getAssetPrefix() derives the prefix from document.currentScript.src
       // and throws unless it contains "/_next/". An own `src` property on this
@@ -181,6 +181,18 @@ export function inlinePage(html, { distDir, publicDir, inlineImageMaxBytes }) {
       imagesInlined: [...imageCache.values()].filter(Boolean).length,
     },
   };
+}
+
+/**
+ * Next always bundles next/dist/build/polyfills/polyfill-module (trimStart,
+ * flat, at, hasOwn, …), which Lighthouse reports as "Legacy JavaScript". Every
+ * browser Next supports (Chrome/Edge/Firefox 111, Safari 16.4) has all of it
+ * except URL.canParse, so the sequence is cut just before that last polyfill.
+ * The match is exact or nothing: an unrecognised shape is left alone.
+ */
+const BASELINE_POLYFILLS_RE = /"trimStart"in String\.prototype\|\|\(String\.prototype\.trimStart=String\.prototype\.trimLeft\),[\s\S]{0,3000}?(?="canParse"in URL\|\|)/;
+function stripBaselinePolyfills(code) {
+  return code.replace(BASELINE_POLYFILLS_RE, "");
 }
 
 /** Replace the chunk's self-registration via document.currentScript with its path. */

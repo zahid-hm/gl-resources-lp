@@ -98,7 +98,9 @@ async function recompress(dir, { width, smWidth, quality, label }) {
   console.log(`${label}: saved ${kb(saved)} total across ${files.length} files\n`);
 }
 
-/** Avatars render at 36–48px; anything larger is wasted bytes. */
+const AVATAR_WIDTH = 96;
+
+/** Avatars render at 24–40px; 96px covers a 2.4x display, anything larger is wasted bytes. */
 async function shrinkClientAvatars() {
   if (!existsSync(CLIENT_DIR)) return;
   const files = (await readdir(CLIENT_DIR)).filter((f) => extname(f) === ".webp");
@@ -107,12 +109,12 @@ async function shrinkClientAvatars() {
     const { size: before } = await stat(src);
     const input = await readFile(src);
     const meta = await sharp(input).metadata();
-    if ((meta.width ?? 0) <= 192) {
+    if ((meta.width ?? 0) <= AVATAR_WIDTH) {
       console.log(`client/${file}  already ${meta.width}px, skipped`);
       continue;
     }
     const out = await sharp(input)
-      .resize({ width: 192, withoutEnlargement: true })
+      .resize({ width: AVATAR_WIDTH, withoutEnlargement: true })
       .webp({ quality: 78, effort: 6 })
       .toBuffer();
     if (out.length < before) {
